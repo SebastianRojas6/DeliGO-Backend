@@ -1,24 +1,24 @@
-mod models; 
+mod models;
+mod routes;
+mod db;
 
-use models::shared::OrderStatus;
-use models::order::OrderRequest;
+use actix_web::{web, App, HttpServer};
+use crate::db::init_db;
+use crate::routes::{orders, products};
 
-fn main() {
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
 
-    let estado = OrderStatus::Preparing;
-    
-    println!("Estado del pedido: {:?}", estado);
+    let pool = init_db().await.expect("Failed to connect to database");
 
-    let solicitud = OrderRequest {
-        user_id: 10,
-        items: vec![1, 2, 3],
-        delivery_address: String::from("Av. Miguelcmep 123"),
-    };
-    
-    
-    println!("Usuario ID: {}", solicitud.user_id);
-    println!("Items: {:?}", solicitud.items);
-    println!("Dirección: {}", solicitud.delivery_address);
-
-
+    HttpServer::new(move || {
+        App::new()
+            .app_data(web::Data::new(pool.clone()))
+            .configure(orders::config)
+            .configure(products::config)
+    })
+        .bind("127.0.0.1:8080")?
+        .run()
+        .await
 }
+
