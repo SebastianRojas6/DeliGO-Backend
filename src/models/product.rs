@@ -2,9 +2,10 @@ use serde::{Serialize, Deserialize};
 use sqlx::FromRow;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct User{
-    pub id_user : i32,
+pub struct Product{
+
+    pub id_product : i8,
     pub name : String,
-    pub phone : String,
-    pub address : String,
+    pub price : f32,
+
 }
