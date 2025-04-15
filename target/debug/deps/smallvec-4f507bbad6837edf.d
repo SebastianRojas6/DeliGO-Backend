@@ -1,5 +1,0 @@
-/home/sebastianrojas/Escritorio/lopez_project/target/debug/deps/libsmallvec-4f507bbad6837edf.rmeta: /home/sebastianrojas/.cargo/registry/src/index.crates.io-6f17d22bba15001f/smallvec-1.15.0/src/lib.rs
-
-/home/sebastianrojas/Escritorio/lopez_project/target/debug/deps/smallvec-4f507bbad6837edf.d: /home/sebastianrojas/.cargo/registry/src/index.crates.io-6f17d22bba15001f/smallvec-1.15.0/src/lib.rs
-
-/home/sebastianrojas/.cargo/registry/src/index.crates.io-6f17d22bba15001f/smallvec-1.15.0/src/lib.rs:
