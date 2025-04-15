@@ -1,21 +1,24 @@
 mod models; 
 
 use models::shared::OrderStatus;
-use models::order::Order;
+use models::order::OrderRequest;
 
 fn main() {
-    println!("Hello, world!");
 
     let estado = OrderStatus::Preparing;
+    
     println!("Estado del pedido: {:?}", estado);
 
-    let orden = Order {
-        id_order: 1,
-        id_user: 10,
-        id_delivery_man: 5,
-        time: chrono::Local::now().naive_local(),
-        state: OrderStatus::Pending,
+    let solicitud = OrderRequest {
+        user_id: 10,
+        items: vec![1, 2, 3],
+        delivery_address: String::from("Av. Miguelcmep 123"),
     };
+    
+    
+    println!("Usuario ID: {}", solicitud.user_id);
+    println!("Items: {:?}", solicitud.items);
+    println!("Dirección: {}", solicitud.delivery_address);
 
-    println!("Orden: {:?}", orden);
+
 }
