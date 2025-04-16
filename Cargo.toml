@@ -11,3 +11,5 @@ sqlx = { version = "0.8.5", features = ["postgres", "runtime-tokio-native-tls", 
 bigdecimal = { version = "0.4.8", features = ["serde"] }
 actix-web = "4"
 dotenv = "0.15.0"
+log = "0.4"
+env_logger = "0.10"

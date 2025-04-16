@@ -2,6 +2,7 @@ use actix_web::{web, HttpResponse, Error};
 use sqlx::PgPool;
 use crate::models::shared::OrderStatus;
 use crate::models::order::{Order, OrderRequest, OrderResponse};
+use log::info;
 
 #[derive(Debug)]
 pub struct OrderController;

@@ -17,13 +17,13 @@ pub struct Order {
 #[derive(Debug, Deserialize)]
 pub struct OrderRequest {
     pub user_id: i32,
-    pub items: Vec<i32>,             
+    pub items: Vec<i32>,
     pub delivery_address: String,
 }
 
 #[derive(Debug, Serialize)]
 pub struct OrderResponse {
     pub id: i32,
-    pub status: OrderStatus,         
+    pub status: OrderStatus,
     pub estimated_time: String,
 }
