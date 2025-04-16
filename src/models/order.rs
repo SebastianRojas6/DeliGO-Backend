@@ -11,6 +11,7 @@ pub struct Order {
     pub id_delivery_man: i32,
     pub time: NaiveDateTime,
     pub state: OrderStatus,
+    pub delivery_address: String,
 }
 
 #[derive(Debug, Deserialize)]

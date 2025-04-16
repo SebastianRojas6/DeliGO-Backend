@@ -1,89 +1,174 @@
-use crate::models::product::{Product, ProductRequest, ProductResponse};
-use actix_web::{web, HttpResponse, Responder};
+use std::str::FromStr;
+use actix_web::{web, HttpResponse, Error};
+use bigdecimal::{BigDecimal, ToPrimitive};
 use sqlx::PgPool;
+use crate::models::product::{Product, ProductRequest, ProductResponse};
 
-pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.route("/product/{id}", web::get().to(get_product))
-        .route("/product/create", web::post().to(create_product))
-        .route("/product/update", web::put().to(update_product))
-        .route("/product/delete", web::post().to(delete_product));
-}
-async fn create_product(
-    pool: web::Data<PgPool>,
-    product: web::Json<ProductRequest>,
-) -> impl Responder {
-    let result = sqlx::query_as::<_, Product>(
-        "INSERT INTO products (name, price) VALUES ($1, $2) RETURNING id_product, name, price",
-    )
-    .bind(&product.name)
-    .bind(product.price)
-    .fetch_one(pool.get_ref())
-    .await;
+#[derive(Debug)]
+pub struct ProductController;
 
-    match result {
-        Ok(new_product) => HttpResponse::Created().json(ProductResponse {
-            id_product: new_product.id_product,
-            name: new_product.name,
-            price: new_product.price,
-        }),
-        Err(e) => HttpResponse::InternalServerError().json(format!("Error: {}", e)),
-    }
-}
+impl ProductController {
+    pub async fn create_product(
+        pool: web::Data<PgPool>,
+        product_req: web::Json<ProductRequest>,
+    ) -> Result<HttpResponse, Error> {
+        let product_req = product_req.into_inner();
 
-async fn get_product(pool: web::Data<PgPool>, product_id: web::Path<i32>) -> impl Responder {
-    let result = sqlx::query_as::<_, Product>(
-        "SELECT id_product, name, price FROM products WHERE id_product = $1",
-    )
-    .bind(product_id.into_inner())
-    .fetch_one(pool.get_ref())
-    .await;
+        // let price = Decimal::new((product_req.price * 100.0) as i64, 2);
+        let price_amount = BigDecimal::from_str(&product_req.price.to_string()).unwrap();
 
-    match result {
-        Ok(product) => HttpResponse::Ok().json(ProductResponse {
-            id_product: product.id_product,
-            name: product.name,
-            price: product.price,
-        }),
-        Err(e) => HttpResponse::NotFound().json(format!("Product not found: {}", e)),
-    }
-}
+        let product = sqlx::query_as!(
+            Product,
+            r#"
+            INSERT INTO products (name, price)
+            VALUES ($1, $2)
+            RETURNING id_product, name, price
+            "#,
+            product_req.name,
+            price_amount
+        )
+            .fetch_one(&**pool)
+            .await;
 
-async fn update_product(
-    pool: web::Data<PgPool>,
-    product_id: web::Path<i32>,
-    product: web::Json<ProductRequest>,
-) -> impl Responder {
-    let result = sqlx::query_as::<_, Product>(
-        "UPDATE products SET name = $1, price = $2 WHERE id_product = $3 RETURNING id_product, name, price"
-    )
-        .bind(&product.name)
-        .bind(product.price)
-        .bind(product_id.into_inner())
-        .fetch_one(pool.get_ref())
-        .await;
-
-    match result {
-        Ok(updated_product) => HttpResponse::Ok().json(ProductResponse {
-            id_product: updated_product.id_product,
-            name: updated_product.name,
-            price: updated_product.price,
-        }),
-        Err(e) => {
-            HttpResponse::InternalServerError().json(format!("Error updating product: {}", e))
+        match product {
+            Ok(product) => Ok(HttpResponse::Created().json(ProductResponse {
+                id_product: product.id_product,
+                name: product.name,
+                price: BigDecimal::to_f32(&product.price).unwrap(),
+            })),
+            Err(e) => {
+                // Handle the sqlx::Error and return a custom response
+                match e {
+                    sqlx::Error::Database(db_error) => {
+                        // Handle database-specific errors (e.g., constraints violations, etc.)
+                        Ok(HttpResponse::InternalServerError().body(format!("Database error: {}", db_error)))
+                    }
+                    sqlx::Error::RowNotFound => {
+                        // Handle the case when the query returns no rows (e.g., invalid product)
+                        Ok(HttpResponse::NotFound().body("Product not found"))
+                    }
+                    _ => {
+                        // Handle other types of errors (e.g., connection issues)
+                        Ok(HttpResponse::InternalServerError().body(format!("Unexpected error: {:?}", e)))
+                    }
+                }
+            }
         }
     }
-}
 
-async fn delete_product(pool: web::Data<PgPool>, product_id: web::Path<i32>) -> impl Responder {
-    let result = sqlx::query("DELETE FROM products WHERE id_product = $1")
-        .bind(product_id.into_inner())
-        .execute(pool.get_ref())
-        .await;
+    pub async fn get_all_products(
+        pool: web::Data<PgPool>,
+    ) -> Result<HttpResponse, Error> {
+        let products = sqlx::query_as!(
+            Product,
+            r#"
+            SELECT id_product, name, price
+            FROM products
+            "#
+        )
+            .fetch_all(&**pool)
+            .await;
 
-    match result {
-        Ok(_) => HttpResponse::NoContent().finish(),
-        Err(e) => {
-            HttpResponse::InternalServerError().json(format!("Error deleting product: {}", e))
+        match products {
+            Ok(products) => Ok(HttpResponse::Ok().json(products)),
+            Err(e) => match e {
+                sqlx::Error::Database(db_error) => Ok(HttpResponse::InternalServerError().body(format!("Database error: {}", db_error))),
+                _ => Ok(HttpResponse::InternalServerError().body(format!("Unexpected error: {:?}", e))),
+            }
         }
+    }
+
+    pub async fn get_product_by_id(
+        pool: web::Data<PgPool>,
+        product_id: web::Path<i32>,
+    ) -> Result<HttpResponse, Error> {
+        let product = sqlx::query_as!(
+            Product,
+            r#"
+            SELECT id_product, name, price
+            FROM products
+            WHERE id_product = $1
+            "#,
+            product_id.into_inner()
+        )
+            .fetch_optional(&**pool)
+            .await;
+
+        match product {
+            Ok(Some(product)) => Ok(HttpResponse::Ok().json(product)),
+            Ok(None) => Ok(HttpResponse::NotFound().body("Product not found")),
+            Err(e) => match e {
+                sqlx::Error::Database(db_error) => Ok(HttpResponse::InternalServerError().body(format!("Database error: {}", db_error))),
+                _ => Ok(HttpResponse::InternalServerError().body(format!("Unexpected error: {:?}", e))),
+            }
+        }
+    }
+
+    pub async fn update_product(
+        pool: web::Data<PgPool>,
+        product_id: web::Path<i32>,
+        product_req: web::Json<ProductRequest>,
+    ) -> Result<HttpResponse, Error> {
+        let product_req = product_req.into_inner();
+
+        let price_amount = BigDecimal::from_str(&product_req.price.to_string()).unwrap();
+
+        let updated_product = sqlx::query_as!(
+            Product,
+            r#"
+            UPDATE products
+            SET name = $1, price = $2
+            WHERE id_product = $3
+            RETURNING id_product, name, price
+            "#,
+            product_req.name,
+            price_amount,
+            product_id.into_inner()
+        )
+            .fetch_optional(&**pool)
+            .await;
+
+        match updated_product {
+            Ok(Some(product)) => Ok(HttpResponse::Ok().json(ProductResponse {
+                id_product: product.id_product,
+                name: product.name,
+                price: BigDecimal::to_f32(&product.price).unwrap(),
+            })),
+            Ok(None) => Ok(HttpResponse::NotFound().body("Product not found")),
+            Err(e) => match e {
+                sqlx::Error::Database(db_error) => Ok(HttpResponse::InternalServerError().body(format!("Database error: {}", db_error))),
+                _ => Ok(HttpResponse::InternalServerError().body(format!("Unexpected error: {:?}", e))),
+            }
+        }
+    }
+
+    pub async fn delete_product(
+        pool: web::Data<PgPool>,
+        product_id: web::Path<i32>,
+    ) -> Result<HttpResponse, Error> {
+        let deleted_count = sqlx::query!(
+            r#"
+            DELETE FROM products
+            WHERE id_product = $1
+            "#,
+            product_id.into_inner()
+        )
+            .execute(&**pool)
+            .await;
+
+        match deleted_count {
+            Ok(result) => {
+                if result.rows_affected() == 0 {
+                    Ok(HttpResponse::NotFound().body("Product not found"))
+                } else {
+                    Ok(HttpResponse::NoContent().finish())
+                }
+            }
+            Err(e) => match e {
+                sqlx::Error::Database(db_error) => Ok(HttpResponse::InternalServerError().body(format!("Database error: {}", db_error))),
+                _ => Ok(HttpResponse::InternalServerError().body(format!("Unexpected error: {:?}", e))),
+            }
+        }
+
     }
 }

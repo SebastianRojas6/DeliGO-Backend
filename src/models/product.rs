@@ -1,13 +1,12 @@
-use actix_web::web;
-use serde::{Serialize, Deserialize};
+use bigdecimal::BigDecimal;
+use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Product{
-
     pub id_product : i32,
     pub name : String,
-    pub price : f32,
+    pub price : BigDecimal,
 
 }
 
