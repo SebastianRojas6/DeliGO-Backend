@@ -8,7 +8,7 @@
             "name": "Restaurant Local",
             "database": "Restaurant",
             "username": "postgres",
-            "password": "imoto5454"
+            "password": "testdb"
         }
     ]
 }
