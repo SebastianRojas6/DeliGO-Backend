@@ -1,12 +1,10 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct OrderDetails{
-
-    pub id_detail : i32,
-    pub id_order : i32,
-    pub id_product : i32,
-    pub amount : i32
-
+pub struct OrderDetails {
+    pub id_detail: i32,
+    pub id_order: i32,
+    pub id_product: i32,
+    pub amount: i32,
 }
