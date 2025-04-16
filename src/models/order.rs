@@ -17,7 +17,7 @@ pub struct Order {
 #[derive(Debug, Deserialize)]
 pub struct OrderRequest {
     pub user_id: i32,
-    pub items: Vec<i32>,             
+    pub id_delivery_man: i32,
     pub delivery_address: String,
 }
 

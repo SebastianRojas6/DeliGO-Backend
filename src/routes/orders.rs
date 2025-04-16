@@ -21,11 +21,13 @@ impl OrderController {
             RETURNING id_order, id_user, id_delivery_man, time, state AS "state: _", delivery_address
             "#,
             order_req.user_id,
-            1,
+            order_req.id_delivery_man,
             order_req.delivery_address
         )
             .fetch_one(&**pool)
             .await;
+
+
 
         match order {
             Ok(order) => {
