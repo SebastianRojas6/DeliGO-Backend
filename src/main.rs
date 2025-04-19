@@ -6,14 +6,14 @@ use actix_web::{web, App, HttpServer};
 use sqlx::PgPool;
 use crate::routes::orders::OrderController;
 use crate::routes::products::ProductController;
-use log::{error, info, warn};
+use log::info;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
     info!("Starting server...");
 
-    let database_url = "postgres://pguser:pgpassword@localhost/pgdatabase";
+    let database_url = "-";
     let pool = PgPool::connect(&database_url).await.unwrap();
 
     HttpServer::new(move || {
