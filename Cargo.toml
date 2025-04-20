@@ -1,14 +1,15 @@
-[package]
-name = "deligo"
-version = "0.1.0"
-edition = "2021"
-
 [workspace]
 members = [
   "crates/adapter",
   "crates/application",
   "crates/db",
-  "crates/domain"
+  "crates/domain",
+  "crates/main"
 ]
 
-
+[workspace.package]
+name = "deligo"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.72"
+authors = ["sebastianrojas"]
