@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
+
 pub struct DeliveryLocation {
     pub id_location: i32,
     pub id_delivery_man: i32,
