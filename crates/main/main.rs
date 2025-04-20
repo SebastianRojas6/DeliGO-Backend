@@ -1,4 +1,4 @@
-mod db;
+/*mod db;
 mod models;
 mod routes;
 
@@ -33,4 +33,11 @@ async fn main() -> std::io::Result<()> {
     .bind("127.0.0.1:8080")?
     .run()
     .await
+}
+*/
+
+fn main(){
+
+    println!("Hola");
+
 }
