@@ -1,0 +1,16 @@
+[package]
+name = "main"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+application = { path = "../application" }
+domain = { path = "../domain" }
+db = { path = "../db" }
+adapter = { path = "../adapter" }
+
+[[bin]]
+name = "deligo"
+path = "main.rs"

@@ -1,0 +1,14 @@
+[package]
+name = "application"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+sea-orm = { version = "^0.12.0", features = [ "sqlx-mysql", "runtime-async-std-native-tls", "macros" ] }
+chrono = { version = "0.4", features = ["serde"] } 
+bigdecimal = { version = "0.4.8", features = ["serde"] }
+
+[lib]
+path = "src/lib.rs"
