@@ -9,3 +9,8 @@ pub struct Model {
     pub phone: String,
     pub address: String,
 }
+
+#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+pub enum Relation {}
+
+impl ActiveModelBehavior for ActiveModel {}
