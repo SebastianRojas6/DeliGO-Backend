@@ -1,16 +1,24 @@
-use bigdecimal::BigDecimal;
+use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
-use sqlx::FromRow;
 
-#[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct Product{
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
+#[sea_orm(table_name = "product")]
+pub struct Model{
+    #[sea_orm(primary_key)]
     pub id_product : i32,
     pub name : String,
     pub price : BigDecimal,
 
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+pub enum Relation {}
+
+impl ActiveModelBehavior for ActiveModel {}
+
+// Api rest 
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct ProductRequest {
     pub name: String,
     pub price: f32,
@@ -22,3 +30,5 @@ pub struct ProductResponse {
     pub name: String,
     pub price: f32,
 }
+
+// --- Conversión (trabjando) --
