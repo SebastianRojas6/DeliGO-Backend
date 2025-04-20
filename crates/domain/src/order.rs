@@ -2,7 +2,7 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
-use crate::models::shared::OrderStatus;
+use crate::shared::OrderStatus;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Order {

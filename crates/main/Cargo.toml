@@ -10,3 +10,7 @@ application = { path = "../application" }
 domain = { path = "../domain" }
 db = { path = "../db" }
 adapter = { path = "../adapter" }
+
+[[bin]]
+name = "deligo"
+path = "main.rs"
