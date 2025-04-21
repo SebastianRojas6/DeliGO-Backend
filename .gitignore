@@ -18,3 +18,7 @@ Cargo.lock
 .sqlx
 Cargo.lock
 .env
+
+### Node.js ###
+# Dependencies installed by npm
+node_modules/
