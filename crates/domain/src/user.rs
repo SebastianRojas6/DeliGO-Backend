@@ -11,6 +11,13 @@ pub struct Model {
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+pub enum Relation {
+    #[sea_orm(
+        has_many = "super::order::Entity",
+        from = "Column::IdUser",
+        to = "super::order::Column::IdUser"
+    )]
+    Order,
+}
 
 impl ActiveModelBehavior for ActiveModel {}

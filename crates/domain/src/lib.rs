@@ -5,3 +5,4 @@ pub mod order_detail;
 pub mod product;
 pub mod shared;
 pub mod user;
+pub mod payment;
