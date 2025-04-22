@@ -19,5 +19,4 @@ Cargo.lock
 
 .idea
 .sqlx
-Cargo.lock
 .env
