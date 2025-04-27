@@ -28,7 +28,7 @@ pub enum Relation {
 impl ActiveModelBehavior for ActiveModel {}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
-#[sea_orm(rs_type = "String", db_type = "String(Some(20))")]
+#[sea_orm(rs_type = "String", db_type = "String(StringLen::N(20))")]
 pub enum PaymentMethod {
     #[sea_orm(string_value = "Visa")]
     Visa,
@@ -43,7 +43,7 @@ pub enum PaymentMethod {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
-#[sea_orm(rs_type = "String", db_type = "String(Some(20))")]
+#[sea_orm(rs_type = "String", db_type = "String(StringLen::N(20))")]
 pub enum PaymentStatus {
     #[sea_orm(string_value = "Pending")]
     Pending,
