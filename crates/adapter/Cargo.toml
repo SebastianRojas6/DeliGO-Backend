@@ -16,6 +16,9 @@ domain = { path = "../domain" }
 application = { path = "../application" }
 bigdecimal = "0.4.8"
 log = "0.4.27"
+reqwest = "0.12.15"
+derive_more = "2.0.1"
+thiserror = "2.0.12"
 
 [lib]
 path = "lib.rs"
