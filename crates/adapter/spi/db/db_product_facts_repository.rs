@@ -3,8 +3,10 @@ use sea_orm::{DatabaseConnection, EntityTrait};
 use async_trait::async_trait;
 use application::mappers::db_mapper::DbMapper;
 use application::repositories::product_fact_repository_abstract::ProductFactRepositoryAbstract;
-use domain::product::{Entity, Model, ProductResponse};
+use domain::product::ProductEntity;
 use crate::spi::db::db_mappers::ProductFactDbMapper;
+use crate::spi::db::db_models::product::Entity;
+
 
 pub struct ProductFactsRepository {
     db: DatabaseConnection,
@@ -17,8 +19,8 @@ impl ProductFactsRepository {
 }
 
 #[async_trait(?Send)]
-impl ProductFactRepositoryAbstract for ProductFactsRepository {
-    async fn get_one_product_by_id_fact(&self, fact_id: i32) -> Result<ProductResponse, Box<dyn Error>> {
+impl<'a> ProductFactRepositoryAbstract for ProductFactsRepository {
+    async fn get_one_product_by_id_fact(&self, fact_id: i32) -> Result<ProductEntity, Box<dyn Error>> {
         let product = Entity::find_by_id(fact_id).one(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
         match product {
             Some(product) => Ok(ProductFactDbMapper::to_entity(product)),
@@ -26,9 +28,9 @@ impl ProductFactRepositoryAbstract for ProductFactsRepository {
         }
     }
 
-    async fn get_all_product_facts(&self) -> Result<Vec<ProductResponse>, Box<dyn Error>> {
+    async fn get_all_product_facts(&self) -> Result<Vec<ProductEntity>, Box<dyn Error>> {
         let products = Entity::find().all(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
-        let product_responses: Vec<ProductResponse> = products.into_iter()
+        let product_responses: Vec<ProductEntity> = products.into_iter()
             .map(|product| ProductFactDbMapper::to_entity(product))
             .collect();
         Ok(product_responses)

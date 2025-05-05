@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use domain::error::ApiError;
-use domain::order::Model as OrderModel;
+use domain::order::{OrderEntity};
 use crate::repositories::order_fact_repository_abstract::OrderFactRepositoryAbstract;
 use crate::usecases::interfaces::AbstractUseCase;
 use crate::utils::error_handling_utils::ErrorHandlingUtils;
@@ -16,8 +16,8 @@ impl <'a> GetAllOrderUsecase<'a> {
 }
 
 #[async_trait(?Send)]
-impl <'a>AbstractUseCase<Vec<OrderModel>> for GetAllOrderUsecase<'a> {
-    async fn execute(&self) -> Result<Vec<OrderModel>, ApiError> {
+impl <'a>AbstractUseCase<Vec<OrderEntity>> for GetAllOrderUsecase<'a> {
+    async fn execute(&self) -> Result<Vec<OrderEntity>, ApiError> {
         let orders = self.repository.get_all_order_facts().await;
         match orders { 
             Ok(orders) => Ok(orders),

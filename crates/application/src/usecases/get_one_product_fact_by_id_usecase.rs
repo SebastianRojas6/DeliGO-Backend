@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use domain::error::ApiError;
 use crate::repositories::product_fact_repository_abstract::ProductFactRepositoryAbstract;
 use crate::usecases::interfaces::AbstractUseCase;
-use domain::product::{Model as ProductModel, ProductResponse};
+use domain::product::{ProductEntity};
 
 pub struct GetOneProductByIdUseCase<'a> {
     product_fact_id: &'a i32,
@@ -16,8 +16,8 @@ impl<'a> GetOneProductByIdUseCase<'a> {
 }
 
 #[async_trait(?Send)]
-impl<'a> AbstractUseCase<ProductResponse> for GetOneProductByIdUseCase<'a> {
-    async fn execute(&self) -> Result<ProductResponse, ApiError> {
+impl<'a> AbstractUseCase<ProductEntity> for GetOneProductByIdUseCase<'a> {
+    async fn execute(&self) -> Result<ProductEntity, ApiError> {
         let product = self.repository.get_one_product_by_id_fact(*self.product_fact_id).await;
         match product {
             Ok(product) => Ok(product),

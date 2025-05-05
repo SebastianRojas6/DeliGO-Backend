@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use domain::error::ApiError;
 use crate::repositories::product_fact_repository_abstract::ProductFactRepositoryAbstract;
 use crate::usecases::interfaces::AbstractUseCase;
-use domain::product::{Model as ProductModel, ProductResponse};
+use domain::product::{ProductEntity};
 use crate::utils::error_handling_utils::ErrorHandlingUtils;
 
 pub struct GetAllProductUSeCase<'a> {
@@ -16,8 +16,8 @@ impl <'a> GetAllProductUSeCase<'a> {
 }
 
 #[async_trait(?Send)]
-impl<'a> AbstractUseCase<Vec<ProductResponse>> for GetAllProductUSeCase<'a> {
-    async fn execute(&self) -> Result<Vec<ProductResponse>, ApiError> {
+impl<'a> AbstractUseCase<Vec<ProductEntity>> for GetAllProductUSeCase<'a> {
+    async fn execute(&self) -> Result<Vec<ProductEntity>, ApiError> {
         let fact_products = self.repository.get_all_product_facts().await;
         match fact_products { 
             Ok(facts) => Ok(facts),

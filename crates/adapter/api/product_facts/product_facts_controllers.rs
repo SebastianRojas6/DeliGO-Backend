@@ -10,7 +10,6 @@ use crate::api::shared::app_state::AppState;
 use crate::api::shared::error_presenter::ErrorResponse;
 
 pub fn routes(cfg: &mut ServiceConfig) {
-    // with path_prefix
     cfg.service(web::scope("/product_facts")
         .service(get_all_products_facts)
         .service(get_one_product_fact_by_id));

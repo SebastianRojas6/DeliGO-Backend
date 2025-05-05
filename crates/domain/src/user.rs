@@ -1,23 +1,38 @@
-use sea_orm::entity::prelude::*;
-
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
-#[sea_orm(table_name = "user")]
-pub struct Model {
-    #[sea_orm(primary_key)]
+#[derive()]
+pub struct UserEntity {
     pub id_user: i32,
     pub name: String,
     pub phone: String,
     pub address: String,
 }
 
-#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {
-    #[sea_orm(
-        has_many = "super::order::Entity",
-        from = "Column::IdUser",
-        to = "super::order::Column::IdUser"
-    )]
-    Order,
-}
+impl UserEntity {
+    pub fn new(
+        id_user: i32,
+        name: String,
+        phone: String,
+        address: String,
+    ) -> Self {
+        Self {
+            id_user,
+            name,
+            phone,
+            address,
+        }
+    }
+    pub fn get_id(&self) -> i32 {
+        self.id_user
+    }
 
-impl ActiveModelBehavior for ActiveModel {}
+    pub fn get_name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn get_phone(&self) -> &str {
+        &self.phone
+    }
+
+    pub fn get_address(&self) -> &str {
+        &self.address
+    }
+}
