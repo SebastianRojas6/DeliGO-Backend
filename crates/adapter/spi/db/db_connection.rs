@@ -6,8 +6,8 @@ pub struct DbConnectionProvider {
     pub connection: DatabaseConnection,
 }
 impl DbConnectionProvider {
-    pub async fn new() -> DatabaseConnection {
-        let db_url = "mysql://root:password@localhost:3306/test_db";
+    pub async fn new() -> Self {
+        let db_url = "postgres://pguser:pgpassword@localhost:5432/deligo?currentSchema=my_schema";
         let mut opt = ConnectOptions::new(db_url);
         opt
             .max_connections(20)
@@ -17,7 +17,8 @@ impl DbConnectionProvider {
             .sqlx_logging(true)
             .sqlx_logging_level(log::LevelFilter::Debug);
 
-        Database::connect(opt).await.expect("failed to connect to DB")
+        let connection = Database::connect(opt).await.expect("failed to connect to DB");
+        Self { connection }
     }
 
     pub fn get_connection(&self) -> &DatabaseConnection {

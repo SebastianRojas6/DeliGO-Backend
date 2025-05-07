@@ -17,7 +17,7 @@ async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
     let data = Data::new(
         AppState {
             app_name: "Skibidi Api".to_string(),
-            product_repository: ProductFactsRepository::new(db_provider),
+            product_repository: ProductFactsRepository::new(db_provider.get_connection().clone()),
         }
     );
 
@@ -42,6 +42,7 @@ async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
 async fn main() -> std::io::Result<()> {
 
     let listener = TcpListener::bind("0.0.0.0:8888").expect("Failed to bind random port");
-    let _ = server(listener).await.expect("daaaaa");
-    Ok(())
+    let serv = server(listener).await?;
+    serv.await
+
 }
