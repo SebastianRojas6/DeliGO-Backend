@@ -1,8 +1,8 @@
 use actix_web::{web, get, HttpResponse};
 use actix_web::web::ServiceConfig;
 use application::mappers::api_mapper::ApiMapper;
-use application::usecases::get_all_product_facts_usecase::GetAllProductUSeCase;
-use application::usecases::get_one_product_fact_by_id_usecase::GetOneProductByIdUseCase;
+use application::usecases::product_fact_uc::get_all_product_facts_usecase::GetAllProductUSeCase;
+use application::usecases::product_fact_uc::get_one_product_fact_by_id_usecase::GetOneProductByIdUseCase;
 use application::usecases::interfaces::AbstractUseCase;
 use crate::api::product_facts::product_facts_mappers::ProductFactPresenterMapper;
 use crate::api::product_facts::product_facts_presenters::ProductFactPresenter;
