@@ -1,2 +1,3 @@
 pub mod get_all_product_facts_usecase;
 pub mod get_one_product_fact_by_id_usecase;
+pub mod delete_product_by_id_fact_usecase;
