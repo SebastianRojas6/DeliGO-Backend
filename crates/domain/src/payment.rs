@@ -1,62 +1,60 @@
-use crate::order;
-
-use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Deserialize, Serialize)]
-#[sea_orm(table_name = "payment")]
-pub struct Model {
-    #[sea_orm(primary_key)]
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum PaymentMethod {
+    Visa,
+    MasterCard,
+    Yape,
+    Plin,
+    Paypal,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum PaymentStatus {
+    Pending,
+    Paid,
+    Cancelled,
+}
+
+#[derive(Debug, Clone)]
+pub struct PaymentEntity {
     pub id_payment: i32,
     pub id_order: i32,
     pub total_amount: f64,
     pub payment_method: PaymentMethod,
     pub payment_status: PaymentStatus,
-    pub payment_date: DateTimeWithTimeZone,
+    pub payment_date: chrono::DateTime<chrono::FixedOffset>,
 }
 
-#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::order::Entity",
-        from = "Column::IdOrder",
-        to = "super::order::Column::IdOrder"
-    )]
-    Order,
-}
+impl PaymentEntity {
+    pub fn new(
+        id_payment: i32,
+        id_order: i32,
+        total_amount: f64,
+        payment_method: PaymentMethod,
+        payment_status: PaymentStatus,
+        payment_date: chrono::DateTime<chrono::FixedOffset>,
+    ) -> Self {
+        Self {
+            id_payment,
+            id_order,
+            total_amount,
+            payment_method,
+            payment_status,
+            payment_date,
+        }
+    }
 
-impl ActiveModelBehavior for ActiveModel {}
+    pub fn mark_as_paid(&mut self) {
+        self.payment_status = PaymentStatus::Paid;
+    }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
-#[sea_orm(rs_type = "String", db_type = "String(Some(20))")]
-pub enum PaymentMethod {
-    #[sea_orm(string_value = "Visa")]
-    Visa,
-    #[sea_orm(string_value = "MasterCard")]
-    MasterCard,
-    #[sea_orm(string_value = "Yape")]
-    Yape,
-    #[sea_orm(string_value = "Plin")]
-    Plin,
-    #[sea_orm(string_value = "Paypal")]
-    Paypal,
-}
+    pub fn cancel_payment(&mut self) {
+        self.payment_status = PaymentStatus::Cancelled;
+    }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
-#[sea_orm(rs_type = "String", db_type = "String(Some(20))")]
-pub enum PaymentStatus {
-    #[sea_orm(string_value = "Pending")]
-    Pending,
-
-    #[sea_orm(string_value = "Paid")]
-    Paid,
-
-    #[sea_orm(string_value = "Cancelled")]
-    Cancelled,
-}
-
-impl Related<order::Entity> for Entity {
-    fn to() -> RelationDef {
-        order::Relation::Payment.def()
+    pub fn is_paid(&self) -> bool {
+        self.payment_status == PaymentStatus::Paid
     }
 }

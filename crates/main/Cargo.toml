@@ -6,10 +6,11 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
+actix-web = "4.10.1"
 application = { path = "../application" }
 domain = { path = "../domain" }
-db = { path = "../db" }
 adapter = { path = "../adapter" }
+env_logger = "0.11.8"
 
 [[bin]]
 name = "deligo"

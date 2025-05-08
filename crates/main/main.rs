@@ -1,43 +1,48 @@
-/*mod db;
-mod models;
-mod routes;
+use std::env;
+use std::net::TcpListener;
+use actix_web::dev::Server;
+use actix_web::middleware::Logger;
+use actix_web::web::Data;
+use adapter::spi::db::db_connection::DbConnectionProvider;
+use adapter::api::shared::app_state::AppState;
+use adapter::spi::db::db_product_facts_repository::ProductFactsRepository;
 
-use actix_web::{web, App, HttpServer};
-use sqlx::PgPool;
-use crate::routes::orders::OrderController;
-use crate::routes::products::ProductController;
-use log::info;
+
+async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
+    env::set_var("RUST_BACKTRACE", "1");
+    env::set_var("RUST_LOG", "actix_web=info,actix_server=info");
+
+    env_logger::try_init().expect("TODO: panic message");
+    let db_provider = DbConnectionProvider::new().await;
+    let data = Data::new(
+        AppState {
+            app_name: "Skibidi Api".to_string(),
+            product_repository: ProductFactsRepository::new(db_provider.get_connection().clone()),
+        }
+    );
+
+    let port = listener.local_addr()?.port();
+
+    let server = actix_web::HttpServer::new(move || {
+        actix_web::App::new()
+            .app_data(data.clone())
+            .wrap(Logger::default())
+            .configure(adapter::api::shared::routes::routes)
+    })
+        .listen(listener)?
+        .run();
+    println!("Server running on port {}", port);
+    println!("Server running on http://localhost:{}", port);
+    
+    Ok(server)
+
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
-    info!("Starting server...");
 
-    let database_url = "-";
-    let pool = PgPool::connect(&database_url).await.unwrap();
-
-    HttpServer::new(move || {
-        App::new()
-            .app_data(web::Data::new(pool.clone()))
-            .route("/orders", web::post().to(OrderController::create_order))
-            .route("/orders", web::get().to(OrderController::get_all_orders))
-            .route("/orders/{id}", web::get().to(OrderController::get_order_by_id))
-            .route("/orders/{id}/status", web::put().to(OrderController::update_order_status))
-            .route("/orders/{id}", web::delete().to(OrderController::delete_order))
-            .route("/products", web::post().to(ProductController::create_product))
-            .route("/products", web::get().to(ProductController::get_all_products))
-            .route("/products/{id}", web::get().to(ProductController::get_product_by_id))
-            .route("/products/{id}", web::put().to(ProductController::update_product))
-            .route("/products/{id}", web::delete().to(ProductController::delete_product))
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
-}
-*/
-
-fn main(){
-
-    println!("Hola");
+    let listener = TcpListener::bind("0.0.0.0:8888").expect("Failed to bind random port");
+    let serv = server(listener).await?;
+    serv.await
 
 }

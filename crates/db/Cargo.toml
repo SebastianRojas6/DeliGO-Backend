@@ -6,7 +6,6 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-sqlx = { version = "0.7.0", features = ["postgres", "runtime-tokio-native-tls", "macros", "chrono", "bigdecimal"] }
 
 [lib]
 path = "src/lib.rs"
