@@ -1,4 +1,5 @@
-pub trait ApiMapper<Entity, Presenter, Payload> {
+pub trait ApiMapper<Entity, Presenter, Payload, DTO> {
     fn to_api(entity: Entity) -> Presenter;
-    fn to_entity(payload: Payload) -> Entity;
+    fn to_dto(payload: Payload) -> DTO;
+
 }

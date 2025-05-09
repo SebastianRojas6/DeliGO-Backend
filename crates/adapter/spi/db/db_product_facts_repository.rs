@@ -4,8 +4,10 @@ use application::mappers::db_mapper::DbMapper;
 use application::repositories::product_fact_repository_abstract::ProductFactRepositoryAbstract;
 use async_trait::async_trait;
 use domain::product::ProductEntity;
-use sea_orm::{DatabaseConnection, EntityTrait};
+use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use std::error::Error;
+use sea_orm::prelude::Decimal;
+use crate::spi::db::db_models::product;
 
 pub struct ProductFactsRepository {
     db: DatabaseConnection,
@@ -41,5 +43,16 @@ impl<'a> ProductFactRepositoryAbstract for ProductFactsRepository {
         } else {
             Ok(())
         }
+    }
+
+    async fn create_product_fact(&self, product: application::DTOs::ProductDTOs::CreateProductDTOs) -> Result<ProductEntity, Box<dyn Error>> {
+        let new_product = product::ActiveModel {
+            name: Set(product.name),
+            price: Set(Decimal::try_from(product.price).unwrap()),  
+            ..Default::default()
+        };
+        let created_product = new_product.insert(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
+        Ok(ProductFactDbMapper::to_entity(created_product))
+        
     }
 }

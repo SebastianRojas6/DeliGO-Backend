@@ -10,6 +10,7 @@ chrono = { version = "0.4", features = ["serde"] }
 bigdecimal = { version = "0.4.8", features = ["serde"] }
 async-trait = "0.1.88"
 domain = { path = "../domain" }
+serde = { version = "1.0.219", features = ["derive"] }
 
 [dev-dependencies]
 mockall = "0.13.1"
