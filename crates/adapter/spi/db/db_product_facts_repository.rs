@@ -1,5 +1,5 @@
 use crate::spi::db::db_mappers::ProductFactDbMapper;
-use crate::spi::db::db_models::product::Entity;
+use crate::spi::db::db_models::product::{ActiveModel, Entity};
 use application::mappers::db_mapper::DbMapper;
 use application::repositories::product_fact_repository_abstract::ProductFactRepositoryAbstract;
 use async_trait::async_trait;
@@ -7,7 +7,7 @@ use domain::product::ProductEntity;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use std::error::Error;
 use sea_orm::prelude::Decimal;
-use crate::spi::db::db_models::product;
+use application::DTOs::ProductDTOs::UpdateProductDTOs;
 
 pub struct ProductFactsRepository {
     db: DatabaseConnection,
@@ -46,7 +46,7 @@ impl<'a> ProductFactRepositoryAbstract for ProductFactsRepository {
     }
 
     async fn create_product_fact(&self, product: application::DTOs::ProductDTOs::CreateProductDTOs) -> Result<ProductEntity, Box<dyn Error>> {
-        let new_product = product::ActiveModel {
+        let new_product = ActiveModel {
             name: Set(product.name),
             price: Set(Decimal::try_from(product.price).unwrap()),  
             ..Default::default()
@@ -54,5 +54,18 @@ impl<'a> ProductFactRepositoryAbstract for ProductFactsRepository {
         let created_product = new_product.insert(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
         Ok(ProductFactDbMapper::to_entity(created_product))
         
+    }
+
+    async fn update_product_fact(&self, product: UpdateProductDTOs) -> Result<ProductEntity, Box<dyn Error>> {
+        let product_to_update = Entity::find_by_id(product.id_product).one(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
+        let mut daa: ActiveModel = product_to_update.unwrap().into();
+        if let Some(name) = product.name {
+            daa.name = Set(name);
+        }
+        if let Some(price) = product.price {
+            daa.price = Set(Decimal::try_from(price).unwrap());
+        }
+        let updated_product = daa.update(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
+        Ok(ProductFactDbMapper::to_entity(updated_product))
     }
 }

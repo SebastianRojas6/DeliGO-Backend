@@ -8,7 +8,7 @@ pub struct InsertProductFactPayload {
 
 #[derive(Debug, Deserialize)]
 pub struct UpdateProductFactPayload {
-    pub id_product: Option<i32>,
+    pub id_product: i32,
     pub name: Option<String>,
     pub price: Option<f32>,
 }

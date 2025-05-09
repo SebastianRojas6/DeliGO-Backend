@@ -1,5 +1,5 @@
 use domain::product::ProductEntity;
-use crate::DTOs::ProductDTOs::CreateProductDTOs;
+use crate::DTOs::ProductDTOs::{CreateProductDTOs, UpdateProductDTOs};
 
 #[cfg(test)]
 use mockall::{predicate::*, *};
@@ -13,4 +13,5 @@ pub trait ProductFactRepositoryAbstract {
     async fn get_all_product_facts(&self) -> Result<Vec<ProductEntity>, Box<dyn Error>>;
     async fn delete_product_by_id_fact(&self, fact_id: i32) -> Result<(), Box<dyn Error>>;
     async fn create_product_fact(&self, product: CreateProductDTOs) -> Result<ProductEntity, Box<dyn Error>>;
+    async fn update_product_fact(&self, product: UpdateProductDTOs) -> Result<ProductEntity, Box<dyn Error>>;
 }
