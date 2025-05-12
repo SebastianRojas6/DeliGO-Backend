@@ -5,6 +5,7 @@ use actix_web::middleware::Logger;
 use actix_web::web::Data;
 use adapter::spi::db::db_connection::DbConnectionProvider;
 use adapter::api::shared::app_state::AppState;
+use adapter::api::shared::routes::routes;
 use adapter::spi::db::db_product_facts_repository::ProductFactsRepository;
 use adapter::spi::db::db_user_facts_repository::UserFactsRepository;
 
@@ -28,7 +29,7 @@ async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
         actix_web::App::new()
             .app_data(data.clone())
             .wrap(Logger::default())
-            .configure(adapter::api::shared::routes::routes)
+            .configure(routes)
     })
         .listen(listener)?
         .run();
