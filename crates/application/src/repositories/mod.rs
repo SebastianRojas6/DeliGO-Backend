@@ -1,2 +1,3 @@
 pub mod order_fact_repository_abstract;
 pub mod product_fact_repository_abstract;
+pub mod user_fact_repository_abstract;

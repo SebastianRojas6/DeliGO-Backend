@@ -6,7 +6,7 @@ use actix_web::web::Data;
 use adapter::spi::db::db_connection::DbConnectionProvider;
 use adapter::api::shared::app_state::AppState;
 use adapter::spi::db::db_product_facts_repository::ProductFactsRepository;
-
+use adapter::spi::db::db_user_facts_repository::UserFactsRepository;
 
 async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
     env::set_var("RUST_BACKTRACE", "1");
@@ -18,6 +18,7 @@ async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
         AppState {
             app_name: "Skibidi Api".to_string(),
             product_repository: ProductFactsRepository::new(db_provider.get_connection().clone()),
+            user_repository: UserFactsRepository::new(db_provider.get_connection().clone())       
         }
     );
 
