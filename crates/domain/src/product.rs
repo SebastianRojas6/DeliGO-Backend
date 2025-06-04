@@ -7,3 +7,13 @@ pub struct ProductEntity {
     pub name: String,
     pub price: f32,
 }
+
+impl ProductEntity {
+    pub fn new(id_product: i32, name: String, price: f32) -> Self {
+        ProductEntity {
+            id_product,
+            name,
+            price,
+        }
+    }
+}

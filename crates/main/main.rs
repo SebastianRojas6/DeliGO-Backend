@@ -19,7 +19,7 @@ async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
         AppState {
             app_name: "Skibidi Api".to_string(),
             product_repository: ProductFactsRepository::new(db_provider.get_connection().clone()),
-            user_repository: UserFactsRepository::new(db_provider.get_connection().clone())       
+            user_repository: UserFactsRepository::new(db_provider.get_connection().clone())
         }
     );
 
@@ -27,6 +27,7 @@ async fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
 
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
+            
             .app_data(data.clone())
             .wrap(Logger::default())
             .configure(routes)
