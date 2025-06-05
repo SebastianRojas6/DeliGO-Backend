@@ -14,7 +14,7 @@ impl DTOMapper<ProductEntity, ProductOutDto> for ProductMapper {
         }
     }
 
-    fn to_dtos(_entities: Vec<ProductEntity>) -> Vec<ProductOutDto> {
-        todo!()
+    fn to_dtos(entities: Vec<ProductEntity>) -> Vec<ProductOutDto> {
+        entities.into_iter().map(ProductMapper::to_dto).collect()
     }
 }
