@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use domain::error::ApiError;
-use crate::DTOs::product::product_in_dto::ProductInDto;
-use crate::DTOs::product::product_out_dto::ProductOutDto;
+use crate::dtos::product::product_in_dto::ProductInDto;
+use crate::dtos::product::product_out_dto::ProductOutDto;
 use crate::impl_mappers::product_mapper::ProductMapper;
 use crate::mappers::app_mapper::DTOMapper;
 use crate::repositories::product_fact_repository_abstract::ProductFactRepositoryAbstract;

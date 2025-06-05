@@ -1,5 +1,5 @@
 use domain::error::ApiError;
-use crate::DTOs::user::user_out_dto::UserOutDTO;
+use crate::dtos::user::user_out_dto::UserOutDTO;
 use crate::impl_mappers::user_mapper::UserMapper;
 use crate::mappers::app_mapper::DTOMapper;
 use crate::repositories::user_fact_repository_abstract::UserFactRepositoryAbstract;

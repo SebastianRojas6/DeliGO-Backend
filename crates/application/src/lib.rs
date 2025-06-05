@@ -2,5 +2,5 @@ pub mod repositories;
 pub mod usecases;
 mod utils;
 pub mod mappers;
-pub mod DTOs;
+pub mod dtos;
 mod impl_mappers;

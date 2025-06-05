@@ -1,5 +1,5 @@
-use application::DTOs::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
-use application::DTOs::user::user_out_dto::UserOutDTO;
+use application::dtos::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
+use application::dtos::user::user_out_dto::UserOutDTO;
 use application::mappers::api_mapper::{ApiInMapper, ApiOutMapper};
 use crate::api::user_facts::user_facts_payloads::{CreateUserFactPayload, UpdateUserFactPayload};
 use crate::api::user_facts::user_facts_presenters::UserFactsPresenter;

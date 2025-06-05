@@ -49,8 +49,8 @@ async fn create_product_fact(data: web::Data<AppState>, payload: web::Json<Inser
         .map(|fact| HttpResponse::Created().json(ProductFactPresenterMapper::to_presenter(fact)))
 }
 
-#[patch("/")]
-async fn update_product_fact(data: web::Data<AppState>, payload: web::Json<UpdateProductFactPayload>) -> Result<HttpResponse, ErrorResponse> {
+#[patch("/{fact_id}")]
+async fn update_product_fact(data: web::Data<AppState>, fact_id: web::Path<i32>, payload: web::Json<UpdateProductFactPayload>) -> Result<HttpResponse, ErrorResponse> {
     let product_fact = ProductFactPresenterMapper::to_api(payload.into_inner());
     let update_product_fact_usecase = UpdateProductFactUseCase::new(&product_fact, &data.product_repository);
     let result = update_product_fact_usecase.execute().await;

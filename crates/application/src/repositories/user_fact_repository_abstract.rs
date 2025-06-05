@@ -3,7 +3,7 @@ use mockall::{predicate::*, automock};
 use std::error::Error;
 use async_trait::async_trait;
 use domain::user::UserEntity;
-use crate::DTOs::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
+use crate::dtos::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
 
 #[cfg_attr(test, automock)]
 #[async_trait(?Send)]

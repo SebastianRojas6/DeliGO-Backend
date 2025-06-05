@@ -2,7 +2,7 @@ use crate::impl_mappers::user_mapper::UserMapper;
 use crate::mappers::app_mapper::DTOMapper;
 use crate::repositories::user_fact_repository_abstract::UserFactRepositoryAbstract;
 use crate::usecases::interfaces::AbstractUseCase;
-use crate::DTOs::user::user_out_dto::UserOutDTO;
+use crate::dtos::user::user_out_dto::UserOutDTO;
 use domain::error::ApiError;
 
 pub struct GetOneUserByIdFactUseCase<'a> {

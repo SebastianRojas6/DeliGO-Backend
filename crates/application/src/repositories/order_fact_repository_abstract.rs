@@ -5,7 +5,7 @@ use domain::order::OrderEntity;
 use mockall::{predicate::*, automock};
 use std::error::Error;
 use async_trait::async_trait;
-use crate::DTOs::order_dto::{CreateOrderDTOs, UpdateOrderDTOs};
+use crate::dtos::order_dto::{CreateOrderDTOs, UpdateOrderDTOs};
 
 #[cfg_attr(test, automock)]
 #[async_trait(?Send)]

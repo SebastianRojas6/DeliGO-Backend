@@ -4,7 +4,7 @@ use domain::product::ProductEntity;
 use mockall::{predicate::*, *};
 use std::error::Error;
 use async_trait::async_trait;
-use crate::DTOs::product::product_in_dto::{ProductInDto, ProductUpdateInDto};
+use crate::dtos::product::product_in_dto::{ProductInDto, ProductUpdateInDto};
 
 #[cfg_attr(test, automock)]
 #[async_trait(?Send)]

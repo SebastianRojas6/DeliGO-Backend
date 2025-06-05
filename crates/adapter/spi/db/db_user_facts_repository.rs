@@ -1,7 +1,7 @@
 use std::error::Error;
 use async_trait::async_trait;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, NotSet, Set};
-use application::DTOs::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
+use application::dtos::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
 use application::mappers::db_mapper::DbMapper;
 use application::repositories::user_fact_repository_abstract::UserFactRepositoryAbstract;
 use domain::user::UserEntity;

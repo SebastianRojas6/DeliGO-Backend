@@ -1,5 +1,5 @@
-use application::DTOs::product::product_out_dto::ProductOutDto;
-use application::DTOs::product::product_in_dto::{ProductInDto, ProductUpdateInDto};
+use application::dtos::product::product_out_dto::ProductOutDto;
+use application::dtos::product::product_in_dto::{ProductInDto, ProductUpdateInDto};
 use application::mappers::api_mapper::{ApiInMapper, ApiOutMapper};
 use crate::api::product_facts::product_facts_payloads::{InsertProductFactPayload, UpdateProductFactPayload};
 use crate::api::product_facts::product_facts_presenters::ProductFactPresenter;

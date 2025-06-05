@@ -1,4 +1,4 @@
-//! A trait that defines methods for mapping between domain entities and Data Transfer Objects (DTOs).
+//! A trait that defines methods for mapping between domain entities and Data Transfer Objects (dtos).
 //!
 //! # Type Parameters
 //! - `Entity`: The type representing the domain entity in the application.
@@ -22,7 +22,7 @@
 //!     - The corresponding output DTO instance.
 //!
 //! - `fn to_dtos(entities: Vec<Entity>) -> Vec<OutDto>`
-//!   - Maps a collection of domain entities (`Vec<Entity>`) to a collection of output DTOs (`Vec<OutDto>`).
+//!   - Maps a collection of domain entities (`Vec<Entity>`) to a collection of output dtos (`Vec<OutDto>`).
 //!   - # Parameters
 //!     - `entities`: A vector of domain entity instances.
 //!   - # Returns

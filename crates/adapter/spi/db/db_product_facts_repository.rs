@@ -7,7 +7,7 @@ use domain::product::ProductEntity;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use std::error::Error;
 use sea_orm::prelude::Decimal;
-use application::DTOs::product::product_in_dto::{ProductInDto, ProductUpdateInDto};
+use application::dtos::product::product_in_dto::{ProductInDto, ProductUpdateInDto};
 
 pub struct ProductFactsRepository {
     db: DatabaseConnection,

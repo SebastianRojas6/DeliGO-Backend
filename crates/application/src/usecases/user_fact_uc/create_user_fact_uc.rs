@@ -3,8 +3,8 @@ use crate::mappers::app_mapper::DTOMapper;
 use crate::repositories::user_fact_repository_abstract::UserFactRepositoryAbstract;
 use crate::usecases::interfaces::AbstractUseCase;
 use crate::utils::error_handling_utils::ErrorHandlingUtils;
-use crate::DTOs::user::user_in_dto::UserCreateInDTO;
-use crate::DTOs::user::user_out_dto::UserOutDTO;
+use crate::dtos::user::user_in_dto::UserCreateInDTO;
+use crate::dtos::user::user_out_dto::UserOutDTO;
 use domain::error::ApiError;
 
 pub struct CreateUserFactUseCase<'a> {
