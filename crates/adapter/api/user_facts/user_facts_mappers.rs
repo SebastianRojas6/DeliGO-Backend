@@ -1,48 +1,39 @@
-use application::DTOs::user_dto::{CreateUserDTOs, UpdateUserDTOs};
-use application::mappers::api_mapper::ApiMapper;
-use domain::user::UserEntity;
+use application::DTOs::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
+use application::DTOs::user::user_out_dto::UserOutDTO;
+use application::mappers::api_mapper::{ApiInMapper, ApiOutMapper};
 use crate::api::user_facts::user_facts_payloads::{CreateUserFactPayload, UpdateUserFactPayload};
 use crate::api::user_facts::user_facts_presenters::UserFactsPresenter;
 
 pub struct UserFactsMapper;
 
-impl ApiMapper<UserEntity, UserFactsPresenter, CreateUserFactPayload, CreateUserDTOs> for UserFactsMapper {
-    fn to_api(entity: UserEntity) -> UserFactsPresenter {
-        UserFactsPresenter {
-            id_user: entity.id_user,
+impl ApiInMapper<CreateUserFactPayload, UserCreateInDTO> for UserFactsMapper {
+    fn to_api(entity: CreateUserFactPayload) -> UserCreateInDTO {
+        UserCreateInDTO {
             name: entity.name,
             phone: entity.phone,
             address: entity.address,
         }
     }
-
-    fn to_dto(payload: CreateUserFactPayload) -> CreateUserDTOs {
-        CreateUserDTOs {
-            name: payload.name,
-            phone: payload.phone,
-            address: payload.address,
-        }
-    }
 }
 
-pub struct UserFactsUpdateMapper;
-
-impl ApiMapper<UserEntity, UserFactsPresenter, UpdateUserFactPayload, UpdateUserDTOs> for UserFactsUpdateMapper {
-    fn to_api(entity: UserEntity) -> UserFactsPresenter {
-        UserFactsPresenter {
-            id_user: entity.id_user,
+impl ApiInMapper<UpdateUserFactPayload, UserUpdateInDTO> for UserFactsMapper {
+    fn to_api(entity: UpdateUserFactPayload) -> UserUpdateInDTO {
+        UserUpdateInDTO {
             name: entity.name,
             phone: entity.phone,
             address: entity.address,
         }
     }
+}
 
-    fn to_dto(payload: UpdateUserFactPayload) -> UpdateUserDTOs {
-        UpdateUserDTOs {
-            id_user: payload.id_user,
-            name: payload.name,
-            phone: payload.phone,
-            address: payload.address,
+impl ApiOutMapper<UserOutDTO, UserFactsPresenter> for UserFactsMapper {
+    fn to_presenter(presenter: UserOutDTO) -> UserFactsPresenter {
+        UserFactsPresenter {
+            id_user: presenter.id_user,
+            name: presenter.name,
+            phone: presenter.phone,
+            address: presenter.address,
         }
     }
 }
+

@@ -1,7 +1,7 @@
 use std::error::Error;
 use async_trait::async_trait;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, NotSet, Set};
-use application::DTOs::user_dto::CreateUserDTOs;
+use application::DTOs::user::user_in_dto::{UserCreateInDTO, UserUpdateInDTO};
 use application::mappers::db_mapper::DbMapper;
 use application::repositories::user_fact_repository_abstract::UserFactRepositoryAbstract;
 use domain::user::UserEntity;
@@ -36,7 +36,7 @@ impl<'a> UserFactRepositoryAbstract for UserFactsRepository {
         }
     }
 
-    async fn create_user_fact(&self, user: CreateUserDTOs) -> Result<UserEntity, Box<dyn Error>> {
+    async fn create_user_fact(&self, user: UserCreateInDTO) -> Result<UserEntity, Box<dyn Error>> {
         let new_user = ActiveModel {
             name: Set(user.name),
             phone: Set(user.phone),
@@ -47,8 +47,8 @@ impl<'a> UserFactRepositoryAbstract for UserFactsRepository {
         Ok(UserFactDbMapper::to_entity(created_user))
     }
 
-    async fn update_user_fact(&self, user: application::DTOs::user_dto::UpdateUserDTOs) -> Result<UserEntity, Box<dyn Error>> {
-        let user_to_update = Entity::find_by_id(user.id_user).one(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
+    async fn update_user_fact(&self, fact_id: i32, user: UserUpdateInDTO) -> Result<UserEntity, Box<dyn Error>> {
+        let user_to_update = Entity::find_by_id(fact_id).one(&self.db).await.map_err(|e| Box::new(e) as Box<dyn Error>)?;
         match user_to_update {
             Some(user_re ) => {
                 let mut utu : ActiveModel = user_re.into();

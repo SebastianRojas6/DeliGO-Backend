@@ -1,14 +1,12 @@
-use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-pub struct CreateUserFactPayload {
+#[derive(Clone, Debug)]
+pub struct UserCreateInDTO {
     pub name: String,
     pub phone: String,
     pub address: String,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct UpdateUserFactPayload {
+#[derive(Clone, Debug)]
+pub struct UserUpdateInDTO {
     pub name: Option<String>,
     pub phone: Option<String>,
     pub address: Option<String>,

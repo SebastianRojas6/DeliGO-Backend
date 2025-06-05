@@ -27,8 +27,11 @@
 //!     - `entities`: A vector of domain entity instances.
 //!   - # Returns
 //!     - A vector of corresponding output DTO instances.
-pub trait DTOMapper<Entity, InDto, OutDto> {
-    fn to_entity(dto: InDto) -> Entity;
+pub trait DTOMapper<Entity, OutDto> {
     fn to_dto(entity: Entity) -> OutDto;
     fn to_dtos(entities: Vec<Entity>) -> Vec<OutDto> ;
+}
+
+pub trait DTOInMapper<Entity, InDto> {
+    fn to_entity(dto: InDto) -> Entity;
 }
