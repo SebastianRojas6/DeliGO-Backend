@@ -1,15 +1,17 @@
 [workspace]
 resolver = "2"
 members = [
-  "crates/adapter",
-  "crates/application",
-  "crates/db",
-  "crates/domain",
-  "crates/main"
+  "crates/admin",
+  "crates/delivery_man",
+  "crates/orders_billing",
+  "crates/register_login",
+  "crates/user",
+  "crates/shared",
+  "crates/main",
 ]
 
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.72"
-authors = ["sebastianrojas", "miguelespp"]
+authors = ["sebastianrojas", "miguelespp", "lazaro"]

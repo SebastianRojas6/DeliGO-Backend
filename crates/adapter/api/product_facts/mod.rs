@@ -1,4 +1,0 @@
-mod product_facts_presenters;
-mod product_facts_payloads;
-mod product_facts_mappers;
-pub mod product_facts_controllers;

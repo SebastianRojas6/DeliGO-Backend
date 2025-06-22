@@ -3,15 +3,19 @@ name = "main"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
-rust-version.workspace = true
 
 [dependencies]
-actix-web = "4.10.1"
-application = { path = "../application" }
-domain = { path = "../domain" }
-adapter = { path = "../adapter" }
-env_logger = "0.11.8"
+admin = { path = "../admin" }
+delivery_man = { path = "../delivery_man"}
+orders_billing = { path = "../orders_billing"}
+register_login = { path = "../register_login"}
+shared = { path = "../shared"}
+user = { path = "../user"}
+
+tokio = { version = "1.45.1", features = ["full"] }
+actix-web = "4"
+dotenv = "0.15.0"
 
 [[bin]]
-name = "deligo"
+name = "Schedule"
 path = "main.rs"
