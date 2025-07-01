@@ -15,6 +15,9 @@ user = { path = "../user"}
 tokio = { version = "1.45.1", features = ["full"] }
 actix-web = "4"
 dotenv = "0.15.0"
+serde = { version = "1.0.219", features = ["derive"] }
+futures-util = "0.3.31"
+jsonwebtoken = "9.3.1"
 
 [[bin]]
 name = "Schedule"
