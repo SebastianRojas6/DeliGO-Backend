@@ -11,7 +11,7 @@ use crate::crud_enrollment::infrastructure::controllers::{
 
 // only need to use the AuthUser struct for now
 pub async fn protected_route(user: AuthUser) -> HttpResponse {
-    HttpResponse::Ok().body(format!("Hello, {}!", user.0.email))
+    HttpResponse::Ok().body(format!("Hello, {}!", user.0.user_metadata.role))
 }
 
 pub fn configure_enrollment_routes(cfg: &mut ServiceConfig) {
