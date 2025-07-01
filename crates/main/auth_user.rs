@@ -40,9 +40,6 @@ impl FromRequest for AuthUser {
             let mut validation = Validation::new(Algorithm::HS256);
             validation.validate_aud = false; // Disable audience validation for simplicity
             let key = DecodingKey::from_secret(secret.as_bytes());
-            
-            println!("token: {}", token);
-            println!("secret: {}", secret);
 
             let decoded = decode::<Claims>(&token, &key, &validation)
                 .map_err(|e| {
