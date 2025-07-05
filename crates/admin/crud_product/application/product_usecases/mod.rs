@@ -1,0 +1,5 @@
+pub mod get_all_products_facts_usecase;
+pub mod get_product_by_id_facts_usecase;
+pub mod create_product_facts_usecase;
+pub mod update_product_facts_usecase;
+pub mod delete_product_facts_usecase;
