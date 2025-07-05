@@ -3,44 +3,45 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "order_details")]
+#[sea_orm(table_name = "shopping_cart")]
 pub struct Model {
     #[sea_orm(primary_key)]
-    pub id_detail: i32,
-    pub id_order: Option<i32>,
+    pub id: i64,
+    pub created_at: DateTimeWithTimeZone,
+    pub id_user: Option<i32>,
     pub id_product: Option<i32>,
-    pub amount: Option<i32>,
+    pub amount: Option<Decimal>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "super::order::Entity",
-        from = "Column::IdOrder",
-        to = "super::order::Column::IdOrder",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    Order,
-    #[sea_orm(
         belongs_to = "super::product::Entity",
         from = "Column::IdProduct",
         to = "super::product::Column::IdProduct",
-        on_update = "NoAction",
-        on_delete = "NoAction"
+        on_update = "Cascade",
+        on_delete = "Cascade"
     )]
     Product,
-}
-
-impl Related<super::order::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Order.def()
-    }
+    #[sea_orm(
+        belongs_to = "super::user::Entity",
+        from = "Column::IdUser",
+        to = "super::user::Column::IdUser",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    User,
 }
 
 impl Related<super::product::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Product.def()
+    }
+}
+
+impl Related<super::user::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::User.def()
     }
 }
 
