@@ -5,14 +5,17 @@ use std::sync::Arc;
 
 use admin::crud_product::infrastructure::api::product_facts::order_facts_controller::*;
 
+use orders_billing::payment_record::infrastructure::{generate_invoice_handler::generate_invoice_handler, get_payment_by_order_handler::get_payment_by_order_handler, register_payment_handler::register_payment_handler,};
+
+use register_login::credential_validation::infrastructure::{login_handler::login_handler, register_handler::register_handler};
+
 use orders_billing::payment_record::infrastructure::{
     generate_invoice_handler::generate_invoice_handler, get_payment_by_order_handler::get_payment_by_order_handler, register_payment_handler::register_payment_handler,
 };
 use register_login::credential_validation::infrastructure::{login_handler::login_handler, register_handler::register_handler};
-use user::infrastructure::controller::{
-    product_controller::{get_all_products, get_by_purchase_for_user, get_selected_products},
-    user_controller::rate_delivery_controller,
-};
+
+use user::infrastructure::controller::{product_controller::{get_all_products, get_by_purchase_for_user, get_selected_products}, user_controller::rate_delivery_controller,};
+
 
 // Importar orders_billing_repository
 
@@ -56,4 +59,10 @@ pub fn configure_routes(app_state: &AppState) -> actix_web::Scope {
         .route("/products", web::post().to(create_product_facts))
         .route("/products", web::patch().to(update_product_facts))
         .route("/products/{id}", web::delete().to(delete_product_facts))
+
+        .route("/deliveryman", web::get().to(get_all_delivery_men)) // GET /deliveryman
+        .route("/deliveryman/{id}", web::get().to(get_delivery_man_by_id)) // GET /deliveryman/{id}
+        .route("/deliveryman", web::put().to(update_delivery_man)) // PUT /deliveryman
+        .route("/deliveryman/{id_delivery}/assign/{id_order}", web::put().to(assign_delivery_to_order))
+
 }
