@@ -1,9 +1,9 @@
-use crate::domain::models::{product_model::Product, user_model::User};
+use crate::domain::models::product_model::Product;
 use crate::domain::repository::ProductRepository;
 // Es el modelo de como estan las entidades en la base de datos
-use crate::infrastructure::entity::{product, user};
+use crate::infrastructure::entity::product;
 use async_trait::async_trait;
-use sea_orm::{ColumnTrait, DatabaseConnection, DbBackend, EntityTrait, JoinType, QueryFilter, QuerySelect, RelationTrait, Statement};
+use sea_orm::{DatabaseConnection, DbBackend, EntityTrait, Statement};
 use shared::connect_to_supabase;
 
 pub struct ProductQuery {
@@ -64,19 +64,14 @@ impl ProductRepository for ProductQuery {
     }
 
     async fn get_selected_products(&self, user_id: i32) -> Result<Vec<Product>, String> {
-        // Get products in user's cart (orders without payments)
         let stmt = Statement::from_sql_and_values(
             DbBackend::Postgres,
             r#"
-            SELECT DISTINCT p.id_product, p.name, p.price
-            FROM product p
-            INNER JOIN order_details od ON p.id_product = od.id_product
-            INNER JOIN "order" o ON od.id_order = o.id_order
-            LEFT JOIN payment pay ON o.id_order = pay.id_order
-            WHERE o.id_user = $1
-            AND pay.id_payment IS NULL  -- Unpaid orders = cart
-            AND o.order_status = 'pending'  -- Assuming cart status
-            "#,
+        SELECT DISTINCT p.id_product, p.name, p.price
+        FROM product p
+        INNER JOIN shopping_cart sc ON p.id_product = sc.id_product
+        WHERE sc.id_user = $1
+        "#,
             vec![user_id.into()],
         );
 

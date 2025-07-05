@@ -4,7 +4,7 @@ use super::sea_orm_active_enums::RolType;
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "user")]
 pub struct Model {
     #[sea_orm(primary_key)]
@@ -16,6 +16,7 @@ pub struct Model {
     pub latitud: Option<String>,
     pub longitud: Option<String>,
     pub password: Option<String>,
+    pub rating: Option<f32>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
