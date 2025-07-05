@@ -1,2 +1,2 @@
-mod api;
-mod spi;
+pub mod api;
+pub mod spi;

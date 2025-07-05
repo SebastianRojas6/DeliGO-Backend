@@ -1,14 +1,15 @@
+use std::sync::Arc;
 use crate::crud_product::application::interface::{AbstractUseCase, ApiError};
 use crate::crud_product::application::utils::ErrorHandlingUtils;
 use crate::crud_product::domain::repository::ProductAbstractRepository;
 
-pub struct DeleteProductFactsUseCase<'a> {
-    pub product_repository: &'a dyn ProductAbstractRepository,
+pub struct DeleteProductFactsUseCase {
+    pub product_repository: Arc<dyn ProductAbstractRepository>,
     pub id_product: i32,
 }
 
-impl<'a> DeleteProductFactsUseCase<'a> {
-    pub fn new(product_repository: &'a dyn ProductAbstractRepository, id_product: i32) -> Self {
+impl DeleteProductFactsUseCase {
+    pub fn new(product_repository: Arc<dyn ProductAbstractRepository>, id_product: i32) -> Self {
         DeleteProductFactsUseCase {
             product_repository,
             id_product,
@@ -17,7 +18,7 @@ impl<'a> DeleteProductFactsUseCase<'a> {
 }
 
 #[async_trait::async_trait(?Send)]
-impl<'a> AbstractUseCase<()> for DeleteProductFactsUseCase<'a> {
+impl AbstractUseCase<()> for DeleteProductFactsUseCase {
     async fn execute(&self) -> Result<(), ApiError> {
         let result = self.product_repository.delete_product(self.id_product).await;
         match result {

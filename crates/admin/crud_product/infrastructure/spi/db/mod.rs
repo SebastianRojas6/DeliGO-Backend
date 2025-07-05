@@ -1,3 +1,3 @@
-mod product_entity;
-mod db_product_facts_repository;
-mod db_mapper;
+pub mod product_entity;
+pub mod db_product_facts_repository;
+pub mod db_mapper;

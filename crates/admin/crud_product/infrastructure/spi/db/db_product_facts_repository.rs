@@ -1,11 +1,10 @@
 use std::error::Error;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait};
 use crate::crud_product::application::dto::product_dto::{ProductCreateDto, ProductUpdateDto};
-use crate::crud_product::application::utils::ErrorHandlingUtils;
 use crate::crud_product::domain::models::product::ProductEntity;
 use crate::crud_product::domain::repository::ProductAbstractRepository;
 use crate::crud_product::infrastructure::spi::db::db_mapper::DBMapper;
-use crate::crud_product::infrastructure::spi::db::product_entity::{ActiveModel, Entity, Model};
+use crate::crud_product::infrastructure::spi::db::product_entity::{ActiveModel, Entity};
 
 pub struct DbProductFactsRepository {
     connection: DatabaseConnection,

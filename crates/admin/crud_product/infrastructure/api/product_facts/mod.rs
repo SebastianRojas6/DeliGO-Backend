@@ -1,1 +1,1 @@
-mod order_facts_controller;
+pub mod order_facts_controller;

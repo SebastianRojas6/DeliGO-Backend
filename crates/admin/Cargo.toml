@@ -7,8 +7,6 @@ rust-version.workspace = true
 
 [dependencies]
 
-shared = { path = "../shared" }
-
 serde = { version = "1.0.219", features = ["derive"] }
 async-trait = "0.1.88"
 sea-orm = "1.1.13"

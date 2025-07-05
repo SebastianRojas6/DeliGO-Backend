@@ -1,10 +1,12 @@
-#[derive(Debug, Clone)]
+use serde::Deserialize;
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct ProductCreateDto {
     pub name: String,
     pub price: f32,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct ProductUpdateDto {
     pub id_product: i32,
     pub name: Option<String>,

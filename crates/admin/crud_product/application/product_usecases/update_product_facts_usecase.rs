@@ -1,17 +1,18 @@
+use std::sync::Arc;
 use crate::crud_product::application::dto::product_dto::ProductUpdateDto;
 use crate::crud_product::application::interface::{AbstractUseCase, ApiError};
 use crate::crud_product::application::utils::ErrorHandlingUtils;
 use crate::crud_product::domain::models::product::ProductEntity;
 use crate::crud_product::domain::repository::ProductAbstractRepository;
 
-pub struct UpdateProductFactsUseCase<'a> {
-    pub product_repository: &'a dyn ProductAbstractRepository,
+pub struct UpdateProductFactsUseCase {
+    pub product_repository: Arc<dyn ProductAbstractRepository>,
     pub product_update_dto: ProductUpdateDto,
 }
 
-impl <'a> UpdateProductFactsUseCase<'a> {
+impl UpdateProductFactsUseCase {
     pub fn new(
-        product_repository: &'a dyn ProductAbstractRepository,
+        product_repository: Arc<dyn ProductAbstractRepository>,
         product_update_dto: ProductUpdateDto,
     ) -> Self {
         UpdateProductFactsUseCase {
@@ -22,7 +23,7 @@ impl <'a> UpdateProductFactsUseCase<'a> {
 }
 
 #[async_trait::async_trait(?Send)]
-impl <'a> AbstractUseCase<ProductEntity> for UpdateProductFactsUseCase<'a> {
+impl AbstractUseCase<ProductEntity> for UpdateProductFactsUseCase {
     async fn execute(&self) -> Result<ProductEntity, ApiError> {
         let updated_product = self.product_repository.update_product(self.product_update_dto.clone()).await;
         match updated_product {
