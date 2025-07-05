@@ -18,12 +18,12 @@ impl LoginUserUseCase {
 
     pub async fn execute(
         &self,
-        address: String,
+        email: String,
         password: String,
     ) -> Result<String, String> {
         let user = self
             .repo
-            .find_by_address(&address)
+            .find_by_email(&email)
             .await?
             .ok_or_else(|| "Usuario no encontrado".to_string())?;
 
@@ -36,7 +36,7 @@ impl LoginUserUseCase {
 
         let claims = JwtClaims {
             sub: user.id.unwrap_or_default().to_string(),
-            email: user.address.clone(),
+            email: user.email.clone(),
             user_metadata: JwtMetadata {
                 role: "user".to_string(), 
             },

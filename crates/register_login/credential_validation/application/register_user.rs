@@ -18,15 +18,14 @@ impl RegisterUserUseCase {
         &self,
         name: String,
         phone: String,
-        address: String,
+        email: String,
+        address: String, 
         raw_password: String,
     ) -> Result<(), String> {
-
-        if let Some(_) = self.repo.find_by_address(&address).await? {
+        if let Some(_) = self.repo.find_by_email(&email).await? {
             return Err("El usuario ya está registrado".to_string());
         }
 
-        // Hashear la contraseña
         let hashed_password = hash(raw_password, DEFAULT_COST)
             .map_err(|e| format!("Error al hashear la contraseña: {}", e))?;
 
@@ -34,7 +33,8 @@ impl RegisterUserUseCase {
             id: None,
             name,
             phone,
-            address,
+            email,
+            address, 
             password: hashed_password,
         };
 

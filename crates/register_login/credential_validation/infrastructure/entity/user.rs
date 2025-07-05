@@ -12,6 +12,7 @@ pub struct Model {
     pub name: Option<String>,
     pub phone: Option<String>,
     pub address: Option<String>,
+    pub email: Option<String>,
     pub rol: Option<RolType>,
     pub latitud: Option<String>,
     pub longitud: Option<String>,

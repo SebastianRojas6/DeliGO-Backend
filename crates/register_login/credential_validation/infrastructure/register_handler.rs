@@ -10,6 +10,7 @@ use crate::credential_validation::domain::repository::UserCredentialRepository;
 pub struct RegisterInput {
     pub name: String,
     pub phone: String,
+    pub email: String,
     pub address: String,
     pub password: String,
 }
@@ -24,6 +25,7 @@ pub async fn register_handler(
         .execute(
             input.name.clone(),
             input.phone.clone(),
+            input.email.clone(),
             input.address.clone(),
             input.password.clone(),
         )
