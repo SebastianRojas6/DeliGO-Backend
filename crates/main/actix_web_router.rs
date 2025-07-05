@@ -14,6 +14,10 @@ use user::infrastructure::controller::{
     user_controller::rate_delivery_controller,
 };
 
+// Importar orders_billing_repository
+
+use orders_billing::payment_record::domain::repository::OrdersBillingRepository;
+
 pub async fn protected_route(user: AuthUser) -> actix_web::HttpResponse {
     actix_web::HttpResponse::Ok().body(format!("Hello, {}!", user.0.user_metadata.role))
 }
@@ -24,22 +28,30 @@ pub fn configure_routes(app_state: &AppState) -> actix_web::Scope {
         .app_data(web::Data::new(app_state.clone()))
         .app_data(web::Data::new(Arc::clone(&app_state.credential_repo)))
         .app_data(web::Data::new(Arc::clone(&app_state.products_repo)))
-        .app_data(web::Data::new(Arc::clone(&app_state.payment_repo)))
+        .app_data(web::Data::new(app_state.orders_billing_repo.clone() as Arc<dyn OrdersBillingRepository>))
         .app_data(web::Data::new(app_state.jwt_secret.clone()))
         .route("/protected", web::get().to(protected_route))
         //Crate Registro-Login
+        // Crate Registro-Login
         .route("/register", web::post().to(register_handler))
         .route("/login", web::post().to(login_handler))
         //Crate Orders-Billing
+        // Crate Orders-Billing
         .route("/payments", web::post().to(register_payment_handler))
         .route("/invoice/{order_id}", web::get().to(generate_invoice_handler))
         .route("/payments/{order_id}", web::get().to(get_payment_by_order_handler))
-        // //Crate User
+        // //Crate User No lo toquen, lo puse independiente
         // .route("/rate-delivery", web::post().to(rate_delivery_controller))
         // .route("/products", web::get().to(get_all_products))
         // .route("/products/purchase/{user_id}/{product_id}", web::get().to(get_by_purchase_for_user))
         // .route("/products/selected/{user_id}", web::get().to(get_selected_products))
         //Crate Admin
+        // Crate User
+        .route("/rate-delivery", web::post().to(rate_delivery_controller))
+        .route("/products", web::get().to(get_all_products))
+        .route("/products/purchase/{user_id}/{product_id}", web::get().to(get_by_purchase_for_user))
+        .route("/products/selected/{user_id}", web::get().to(get_selected_products))
+        // Crate Admin
         .route("/products/{id}", web::get().to(get_product_facts_by_id))
         .route("/products", web::post().to(create_product_facts))
         .route("/products", web::patch().to(update_product_facts))

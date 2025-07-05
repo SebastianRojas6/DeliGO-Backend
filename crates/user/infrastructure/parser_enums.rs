@@ -1,5 +1,5 @@
 use super::super::domain::models::enums::RoleType;
-use super::entity::sea_orm_active_enums::RolType;
+use shared::entity::sea_orm_active_enums::RolType;
 
 // Por ahora solo hice para el Rol, si necesitan para otros enums ya lo unifican bien la organización de carpetas
 

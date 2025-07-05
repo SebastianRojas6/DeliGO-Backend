@@ -1,9 +1,9 @@
 use crate::domain::models::product_model::Product;
 use crate::domain::repository::ProductRepository;
-use crate::infrastructure::entity::product;
 use async_trait::async_trait;
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, JoinType, QueryFilter, QuerySelect, RelationTrait};
 use shared::connect_to_supabase;
+use shared::entity::{order, order_details, payment, product, shopping_cart};
 
 pub struct ProductQuery {
     pub db: DatabaseConnection,
@@ -31,9 +31,8 @@ impl ProductRepository for ProductQuery {
         })
     }
 
+    //te voy a matar daniel lorenzo , qué es esta webada
     async fn get_by_purchase_for_user(&self, user_id: i32, product_id: i32) -> Result<Vec<Product>, String> {
-        use crate::infrastructure::entity::{order, order_details, payment};
-
         let products = product::Entity::find()
             .join(JoinType::InnerJoin, product::Relation::OrderDetails.def())
             .join(JoinType::InnerJoin, order_details::Relation::Order.def())
@@ -56,8 +55,6 @@ impl ProductRepository for ProductQuery {
     }
 
     async fn get_selected_products(&self, user_id: i32) -> Result<Vec<Product>, String> {
-        use crate::infrastructure::entity::shopping_cart;
-
         let products = product::Entity::find()
             .join(JoinType::InnerJoin, product::Relation::ShoppingCart.def())
             .filter(shopping_cart::Column::IdUser.eq(user_id))

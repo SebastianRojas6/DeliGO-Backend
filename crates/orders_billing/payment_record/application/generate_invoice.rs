@@ -1,16 +1,16 @@
 // orders_billing/application/generate_invoice.rs
 
-use crate::payment_record::domain::repository::InvoiceGenerator;
+use crate::payment_record::domain::repository::OrdersBillingRepository;
 use crate::payment_record::domain::model::Invoice;
 
 use std::sync::Arc;
 
 pub struct GenerateInvoiceUseCase {
-    pub repo: Arc<dyn InvoiceGenerator>,
+    pub repo: Arc<dyn OrdersBillingRepository>,
 }
 
 impl GenerateInvoiceUseCase {
-    pub fn new(repo: Arc<dyn InvoiceGenerator>) -> Self {
+    pub fn new(repo: Arc<dyn OrdersBillingRepository>) -> Self {
         Self { repo }
     }
 
