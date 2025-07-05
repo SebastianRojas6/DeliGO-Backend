@@ -3,11 +3,11 @@ use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use crate::crud_delivery_man::application::dto::delivery_man_dto::DeliveryManUpdateDto;
 use crate::crud_delivery_man::domain::model::DeliveryManEntity;
 use crate::crud_delivery_man::domain::repository::DeliveryManAbstractRepository;
-use crate::crud_delivery_man::infrastructure::spi::entity::user::{Entity, Model, self};
+use crate::crud_delivery_man::infrastructure::spi::entity::user::{Entity, self};
 use crate::crud_delivery_man::infrastructure::spi::entity::order::Entity as OrderEntity;
 use crate::crud_delivery_man::infrastructure::spi::db_mapper::DBMapper;
 use crate::crud_delivery_man::infrastructure::spi::entity::order;
-use crate::crud_delivery_man::infrastructure::spi::entity::sea_orm_active_enums::{map_roltype_from_entity, roltype_from_i32};
+use crate::crud_delivery_man::infrastructure::spi::entity::sea_orm_active_enums::{roltype_from_i32};
 
 pub struct DbDeliveryFactsRepository {
     connection: DatabaseConnection,

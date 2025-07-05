@@ -6,15 +6,14 @@ use crate::crud_delivery_man::application::delivery_usecases::get_delivery_info_
 use crate::crud_delivery_man::application::delivery_usecases::update_delivery_man_uc::UpdateDeliveryManUC;
 use crate::crud_delivery_man::domain::repository::DeliveryManAbstractRepository;
 use crate::crud_delivery_man::application::dto::delivery_man_dto::DeliveryManUpdateDto;
-use crate::crud_delivery_man::domain::model::DeliveryManEntity;
 use crate::crud_product::application::interface::AbstractUseCase;
 use crate::crud_product::infrastructure::api::shared::error_presenter::ErrorResponse;
 
 pub async fn get_all_delivery_men(
     data: Data<Arc<dyn DeliveryManAbstractRepository>>
 ) -> Result<HttpResponse, ErrorResponse> {
-    let getAllDeliveryFactUC = GetAllDeliveryMansUc::new(data.get_ref().clone());
-    let result = getAllDeliveryFactUC.execute().await;
+    let get_all_delivery_fact_uc = GetAllDeliveryMansUc::new(data.get_ref().clone());
+    let result = get_all_delivery_fact_uc.execute().await;
     result
         .map(|delivery_men| HttpResponse::Ok().json(delivery_men))
         .map_err(ErrorResponse::map_io_error)
