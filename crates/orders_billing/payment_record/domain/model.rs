@@ -2,7 +2,8 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
-use register_login::credential_validation::infrastructure::entity::sea_orm_active_enums::{
+
+use shared::entity::sea_orm_active_enums::{
     MethodPaymentEnum as DbPaymentMethod,
     StatePaymentEnum as DbPaymentStatus,
 };

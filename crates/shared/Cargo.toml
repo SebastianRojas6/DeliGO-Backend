@@ -7,6 +7,7 @@ rust-version.workspace = true
 
 [dependencies]
 sea-orm = { version = "1.1.12", features = ["sqlx-postgres", "runtime-actix-native-tls"] }
+serde = "1.0.219"
 
 [lib]
 path = "lib.rs"

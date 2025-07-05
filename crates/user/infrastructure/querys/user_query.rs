@@ -1,6 +1,6 @@
 //use crate::domain::models::{product_model::Product, user_model::User};
 use crate::domain::repository::UserRepository;
-use crate::infrastructure::entity::{order, user};
+use shared::entity::{order, user};
 use async_trait::async_trait;
 use sea_orm::query::Condition;
 use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set};

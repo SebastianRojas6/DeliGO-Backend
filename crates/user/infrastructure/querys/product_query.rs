@@ -1,9 +1,9 @@
 use crate::domain::models::product_model::Product;
 use crate::domain::repository::ProductRepository;
 // Es el modelo de como estan las entidades en la base de datos
-use crate::infrastructure::entity::product;
+use shared::entity::product;
 use async_trait::async_trait;
-use sea_orm::{DatabaseConnection, DbBackend, EntityTrait, Statement};
+use sea_orm::{DatabaseConnection, DbBackend, Statement, EntityTrait};
 use shared::connect_to_supabase;
 
 pub struct ProductQuery {
@@ -32,6 +32,8 @@ impl ProductRepository for ProductQuery {
         })
     }
 
+
+    //te voy a matar daniel lorenzo , qué es esta webada
     async fn get_by_purchase_for_user(&self, user_id: i32, product_id: i32) -> Result<Vec<Product>, String> {
         // Verify user purchased this specific product
         let stmt = Statement::from_sql_and_values(

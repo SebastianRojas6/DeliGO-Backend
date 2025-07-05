@@ -5,7 +5,7 @@ use serde_json::json;
 
 use crate::payment_record::application::register_payment::RegisterPaymentUseCase;
 use crate::payment_record::domain::model::PaymentMethod;
-use crate::payment_record::domain::repository::PaymentRepository;
+use crate::payment_record::domain::repository::OrdersBillingRepository;
 
 #[derive(Debug, Deserialize)]
 pub struct RegisterPaymentInput {
@@ -15,7 +15,7 @@ pub struct RegisterPaymentInput {
 }
 
 pub async fn register_payment_handler(
-    repo: web::Data<Arc<dyn PaymentRepository>>,
+    repo: web::Data<Arc<dyn OrdersBillingRepository>>,
     input: web::Json<RegisterPaymentInput>,
 ) -> HttpResponse {
     let use_case = RegisterPaymentUseCase::new(repo.get_ref().clone());

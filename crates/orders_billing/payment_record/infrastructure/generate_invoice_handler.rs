@@ -3,10 +3,10 @@ use std::sync::Arc;
 use serde_json::json;
 
 use crate::payment_record::application::generate_invoice::GenerateInvoiceUseCase;
-use crate::payment_record::domain::repository::InvoiceGenerator;
+use crate::payment_record::domain::repository::OrdersBillingRepository;
 
 pub async fn generate_invoice_handler(
-    repo: web::Data<Arc<dyn InvoiceGenerator>>,
+    repo: web::Data<Arc<dyn OrdersBillingRepository>>,
     path: web::Path<i32>,
 ) -> HttpResponse {
     let order_id = path.into_inner();

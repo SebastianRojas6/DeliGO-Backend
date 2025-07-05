@@ -4,4 +4,5 @@ pub use super::order::Entity as Order;
 pub use super::order_details::Entity as OrderDetails;
 pub use super::payment::Entity as Payment;
 pub use super::product::Entity as Product;
+pub use super::shopping_cart::Entity as ShoppingCart;
 pub use super::user::Entity as User;

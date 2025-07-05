@@ -2,8 +2,9 @@ use sea_orm::{DatabaseConnection, EntityTrait, ActiveModelTrait, Set, ColumnTrai
 
 use crate::credential_validation::domain::model::UserCredential;
 use crate::credential_validation::domain::repository::UserCredentialRepository;
-use crate::credential_validation::infrastructure::entity::sea_orm_active_enums::RolType;
-use crate::credential_validation::infrastructure::entity::user;
+use shared::entity::sea_orm_active_enums::RolType;
+use shared::entity::user;
+
 use async_trait::async_trait;
 
 pub struct SeaOrmUserCredentialRepository {
@@ -15,11 +16,11 @@ impl UserCredentialRepository for SeaOrmUserCredentialRepository {
     async fn create_user(&self, user: UserCredential) -> Result<(), String> {
         let new_user = user::ActiveModel {
             name: Set(Some(user.name)),
-            phone: Set(Some(user.phone)),
-            email: Set(Some(user.email)),
-            address: Set(Some(user.address)),
-            password: Set(Some(user.password)), 
-            rol: Set(Some(RolType::Customer)), 
+            phone: Set(user.phone),
+            email: Set(user.email),
+            address: Set(user.address),
+            password: Set(user.password),
+            rol: Set(RolType::Customer),
             ..Default::default()
         };
 
@@ -37,10 +38,10 @@ impl UserCredentialRepository for SeaOrmUserCredentialRepository {
         Ok(result.map(|u| UserCredential {
             id: Some(u.id_user),
             name: u.name.unwrap_or_default(),
-            phone: u.phone.unwrap_or_default(),
-            email: u.email.unwrap_or_default(),
-            password: u.password.unwrap_or_default(),
-            address: u.address.unwrap_or_default(),
+            phone: u.phone,
+            email: u.email,
+            password: u.password,
+            address: u.address,
         }))
     }
 }

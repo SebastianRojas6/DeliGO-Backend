@@ -1,15 +1,15 @@
 use crate::payment_record::domain::model::{Payment, PaymentStatus, PaymentMethod};
-use crate::payment_record::domain::repository::PaymentRepository;
+use crate::payment_record::domain::repository::OrdersBillingRepository;
 
 use chrono::Utc;
 use std::sync::Arc;
 
 pub struct RegisterPaymentUseCase {
-    pub repo: Arc<dyn PaymentRepository>,
+    pub repo: Arc<dyn OrdersBillingRepository>,
 }
 
 impl RegisterPaymentUseCase {
-    pub fn new(repo: Arc<dyn PaymentRepository>) -> Self {
+    pub fn new(repo: Arc<dyn OrdersBillingRepository>) -> Self {
         Self { repo }
     }
 

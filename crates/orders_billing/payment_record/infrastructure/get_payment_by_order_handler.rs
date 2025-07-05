@@ -2,10 +2,10 @@ use actix_web::{web, HttpResponse};
 use std::sync::Arc;
 use serde_json::json;
 
-use crate::payment_record::domain::repository::PaymentRepository;
+use crate::payment_record::domain::repository::OrdersBillingRepository;
 
 pub async fn get_payment_by_order_handler(
-    repo: web::Data<Arc<dyn PaymentRepository>>,
+    repo: web::Data<Arc<dyn OrdersBillingRepository>>,
     path: web::Path<i32>,
 ) -> HttpResponse {
     let order_id = path.into_inner();

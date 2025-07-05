@@ -7,4 +7,5 @@ pub mod order_details;
 pub mod payment;
 pub mod product;
 pub mod sea_orm_active_enums;
+pub mod shopping_cart;
 pub mod user;

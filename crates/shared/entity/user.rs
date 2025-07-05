@@ -2,20 +2,22 @@
 
 use super::sea_orm_active_enums::RolType;
 use sea_orm::entity::prelude::*;
-use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
 #[sea_orm(table_name = "user")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id_user: i32,
     pub name: Option<String>,
-    pub phone: Option<String>,
-    pub address: Option<String>,
-    pub rol: Option<RolType>,
+    pub phone: String,
+    pub address: String,
+    pub rol: RolType,
     pub latitud: Option<String>,
     pub longitud: Option<String>,
-    pub password: Option<String>,
+    pub password: String,
+    #[sea_orm(unique)]
+    pub email: String,
+    #[sea_orm(column_type = "Float", nullable)]
     pub rating: Option<f32>,
 }
 
@@ -23,11 +25,19 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::order::Entity")]
     Order,
+    #[sea_orm(has_many = "super::shopping_cart::Entity")]
+    ShoppingCart,
 }
 
 impl Related<super::order::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Order.def()
+    }
+}
+
+impl Related<super::shopping_cart::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::ShoppingCart.def()
     }
 }
 

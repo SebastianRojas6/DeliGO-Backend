@@ -20,8 +20,8 @@ impl DbProductFactsRepository {
     }
 }
 
-#[async_trait::async_trait(?Send)]
-impl<'a> ProductAbstractRepository for DbProductFactsRepository {
+#[async_trait::async_trait]
+impl ProductAbstractRepository for DbProductFactsRepository {
     async fn get_all_products(&self) -> Result<Vec<ProductEntity>, Box<dyn Error>> {
         let products = Entity::find().all(&self.connection).await.map_err(|e| {
             Box::new(e) as Box<dyn Error>
