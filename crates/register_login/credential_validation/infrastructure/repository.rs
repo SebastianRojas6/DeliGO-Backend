@@ -2,6 +2,7 @@ use sea_orm::{DatabaseConnection, EntityTrait, ActiveModelTrait, Set, ColumnTrai
 
 use crate::credential_validation::domain::model::UserCredential;
 use crate::credential_validation::domain::repository::UserCredentialRepository;
+use crate::credential_validation::infrastructure::entity::sea_orm_active_enums::RolType;
 use crate::credential_validation::infrastructure::entity::user;
 use async_trait::async_trait;
 
@@ -17,6 +18,7 @@ impl UserCredentialRepository for SeaOrmUserCredentialRepository {
             phone: Set(Some(user.phone)),
             address: Set(Some(user.address)),
             password: Set(Some(user.password)), 
+            rol: Set(Some(RolType::Customer)), 
             ..Default::default()
         };
 
