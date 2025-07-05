@@ -1,5 +1,3 @@
-use actix_web::{HttpResponse, Scope};
-use actix_web::web::{self, ServiceConfig};
 use crate::auth_user::AuthUser;
 use crate::bootstrap::AppState;
 use actix_web::web;

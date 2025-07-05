@@ -3,8 +3,6 @@ use admin::crud_product::domain::repository::ProductAbstractRepository;
 use admin::crud_product::infrastructure::spi::db::db_product_facts_repository::DbProductFactsRepository;
 use shared::config::connect_to_supabase;
 
-use std::sync::Arc;
-
 use register_login::credential_validation::infrastructure::repository::SeaOrmUserCredentialRepository;
 use register_login::credential_validation::domain::repository::UserCredentialRepository;
 
