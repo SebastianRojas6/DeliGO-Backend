@@ -20,8 +20,6 @@
 - Actix Web
 - SeaORM
 - PostgreSQL (Supabase)
-- MongoDB
-- Google Maps API
 
 ---
 
@@ -48,12 +46,8 @@ cd deligo
 <h3>Config .env variables</h3>
 Usa el archivo .env.example como referencia para crear tu archivo de configuración .env con tus credenciales:
 
-DATABASE_URL=postgres://usuario:contraseña@localhost:5432/deligo
-MONGO_URL=mongodb://localhost:27017
-SUPABASE_URL=https://<your-supabase-id>.supabase.co
-SUPABASE_KEY=your-anon-key
-MAPS_API_KEY=your-google-maps-api-key
-
+SUPABASE_URL=postgresql:
+SUPABASE_JWT_SECRET=
 
 <h3>Starting</h3>
 Cómo iniciar el proyecto localmente:
@@ -61,7 +55,3 @@ Cómo iniciar el proyecto localmente:
 ```bash
 # Ejecutar backend directamente con cargo
 cargo run
-
-# O usar Docker (si tienes configurado docker-compose.yml)
-docker-compose up --build
-```

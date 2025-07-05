@@ -6,6 +6,12 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
+chrono = "0.4.41"
+register_login = { path = "../register_login"}
+serde = { version = "1.0.219", features = ["derive"] }
+async-trait = "0.1.88"
+actix-web = "4"
+serde_json = "1.0.140"
 
 [lib]
 path = "lib.rs"
