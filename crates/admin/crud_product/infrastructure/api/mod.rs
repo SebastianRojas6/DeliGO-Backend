@@ -1,2 +1,2 @@
 pub mod product_facts;
-mod shared;
+pub mod shared;
