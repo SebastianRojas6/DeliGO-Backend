@@ -6,6 +6,17 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
+actix-web = "4"
+async-trait = "0.1.42"
+chrono = "0.4.19"
+sea-orm = { version = "1.1.12", features = [
+    "sqlx-postgres",
+    "runtime-actix-native-tls",
+] }
+serde = { version = "1.0.130", features = ["derive"] }
+serde_json = "1.0.73"
+
+shared = { path = "../shared" }
 
 [lib]
 path = "lib.rs"
