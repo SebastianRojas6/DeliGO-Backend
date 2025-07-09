@@ -15,6 +15,8 @@ user = { path = "../user" }
 tokio = { version = "1.45.1", features = ["full"] }
 actix-web = "4"
 actix-cors = "0.6"
+env_logger = "0.11.8"
+log = "0.4.17"
 dotenv = "0.15.0"
 serde = { version = "1.0.219", features = ["derive"] }
 futures-util = "0.3.31"

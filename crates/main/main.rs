@@ -14,6 +14,7 @@ use user::infrastructure::routes::config;
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
     dotenv::dotenv().ok();
+    env_logger::init();
 
     let app_state = init_state().await.expect("Failed to initialize state");
     let user_app_state = bootstrap_user().await.expect("Failed to initialize user state");
@@ -23,7 +24,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(
                 Cors::default()
                     .allowed_origin("http://localhost:5173")
-                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+                    .allowed_methods(vec!["GET", "POST", "PUT", "PATCH", "DELETE"])
                     .allowed_headers(vec!["Content-Type", "Authorization"])
                     .max_age(3600),
             )
