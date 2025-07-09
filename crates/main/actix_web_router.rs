@@ -1,5 +1,5 @@
 use actix_web::{web, HttpResponse, Scope};
-use delivery_man::crud_order::infrastructure::controllers::list_orders;
+use delivery_man::crud_order::infrastructure::controllers::*;
 use std::sync::Arc;
 
 use crate::{auth_user::AuthUser, bootstrap::AppState};
@@ -57,12 +57,9 @@ pub fn configure_routes(app_state: &AppState) -> Scope {
         .route("/products", web::post().to(create_product_facts))
         .route("/products", web::patch().to(update_product_facts))
         .route("/products/{id}", web::delete().to(delete_product_facts))
-
         // order routes
-        .route("/orders", web::get().to(list_order))
+        .route("/orders", web::get().to(list_orders))
         .route("/orders", web::post().to(create_order))
-        .route("/orders/{id}", web::get().to(get_order_by_id))
         .route("/orders", web::patch().to(update_order))
         .route("/orders/{id}", web::delete().to(delete_order))
-    }
 }
