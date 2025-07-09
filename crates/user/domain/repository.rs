@@ -11,4 +11,5 @@ pub trait ProductRepository: Send + Sync {
 #[async_trait]
 pub trait UserRepository: Send + Sync {
     async fn rating_delivery(&self, user_id: i32, delivery_id: i32) -> Result<(), String>;
+    async fn change_order_status(&self, id: &str, estado: &str) -> Result<String, String>;
 }

@@ -1,10 +1,11 @@
 //use crate::domain::models::{product_model::Product, user_model::User};
 use crate::domain::repository::UserRepository;
-use shared::entity::{order, user};
 use async_trait::async_trait;
 use sea_orm::query::Condition;
-use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter, Set};
 use shared::connect_to_supabase;
+use shared::entity::sea_orm_active_enums::StateOrderEnum;
+use shared::entity::{order, user};
 
 pub struct UserQuery {
     pub db: DatabaseConnection,
@@ -51,5 +52,46 @@ impl UserRepository for UserQuery {
         delivery_man.update(&self.db).await.map_err(|e| e.to_string())?;
 
         Ok(())
+    }
+
+    async fn change_order_status(&self, id: &str, estado: &str) -> Result<String, String> {
+        // Parsear el ID a i32
+        let order_id = id.parse::<i32>().map_err(|_| "ID de orden inválido".to_string())?;
+
+        // Convertir el string de estado al enum correspondiente
+        let new_status = match estado.to_lowercase().as_str() {
+            "pending" => StateOrderEnum::Pending,
+            "preparing" => StateOrderEnum::Preparing,
+            "ontheway" => StateOrderEnum::OnTheWay,
+            "delivered" => StateOrderEnum::Delivered,
+            "cancelled" => StateOrderEnum::Cancelled,
+            _ => return Err("Estado de orden no válido".to_string()),
+        };
+
+        // Buscar la orden en la base de datos
+        let order = order::Entity::find_by_id(order_id).one(&self.db).await.map_err(|e| e.to_string())?;
+
+        let mut order = match order {
+            Some(o) => o.into_active_model(),
+            None => return Err("Orden no encontrada".to_string()),
+        };
+
+        // Actualizar el estado
+        order.order_status = Set(Some(new_status.clone()));
+
+        // Guardar los cambios
+        let updated_order = order.update(&self.db).await.map_err(|e| e.to_string())?;
+
+        // Devolver el nuevo estado como string
+        match updated_order.order_status {
+            Some(status) => Ok(match status {
+                StateOrderEnum::Pending => "Pending".to_string(),
+                StateOrderEnum::Preparing => "Preparing".to_string(),
+                StateOrderEnum::OnTheWay => "OnTheWay".to_string(),
+                StateOrderEnum::Delivered => "Delivered".to_string(),
+                StateOrderEnum::Cancelled => "Cancelled".to_string(),
+            }),
+            None => Err("El estado de la orden es nulo".to_string()),
+        }
     }
 }
