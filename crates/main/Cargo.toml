@@ -6,14 +6,15 @@ authors.workspace = true
 
 [dependencies]
 admin = { path = "../admin" }
-delivery_man = { path = "../delivery_man"}
-orders_billing = { path = "../orders_billing"}
-register_login = { path = "../register_login"}
-shared = { path = "../shared"}
-user = { path = "../user"}
+delivery_man = { path = "../delivery_man" }
+orders_billing = { path = "../orders_billing" }
+register_login = { path = "../register_login" }
+shared = { path = "../shared" }
+user = { path = "../user" }
 
 tokio = { version = "1.45.1", features = ["full"] }
 actix-web = "4"
+actix-cors = "0.6"
 dotenv = "0.15.0"
 serde = { version = "1.0.219", features = ["derive"] }
 futures-util = "0.3.31"
